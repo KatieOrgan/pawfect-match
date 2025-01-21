@@ -313,8 +313,8 @@ DEPENDENCIES
   bootstrap (~> 5.2)
   capybara
   debug
-  font-awesome-sass (~> 6.1)
   devise
+  font-awesome-sass (~> 6.1)
   importmap-rails
   jbuilder
   pg (~> 1.1)
