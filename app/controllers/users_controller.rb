@@ -1,6 +1,13 @@
 class UsersController < ApplicationController
   def show
-    @user = User.find(params[:id])
+    @user = User.find_by(id: params[:id])
+    if @user.nil?
+      if user_signed_in?
+        redirect_to authenticated_root_path, alert: "User not found."
+      else
+        redirect_to unauthenticated_root_path, alert: "User not found."
+      end
+    end
   end
 
   def new
