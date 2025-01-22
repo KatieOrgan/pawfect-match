@@ -1,4 +1,8 @@
 class BookingsController < ApplicationController
+  before_action :authenticate_user!
+  before_action :set_booking, only: [:edit, :update, :destroy]
+  before_action :set_pet, only: [:new, :create]
+
   def index
     @bookings = Booking.all
   end
@@ -43,5 +47,13 @@ class BookingsController < ApplicationController
 
   def booking_params
     params.require(:booking).permit(:start_date, :end_date, :status, :user_id, :pet_id)
+  end
+
+  def set_booking
+    @booking = current_user.bookings.find(params[:id])
+  end
+
+  def set_pet
+    @pet = Pet.find(params[:pet_id])
   end
 end
