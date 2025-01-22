@@ -15,6 +15,16 @@
   <% end %>
 </div>
 
+<%= simple_form_for(@user) do |f| %>
+  <%= f.input :profile_pic_url, as: :file, label: 'Profile Picture' %>
+  <%= f.input :bio, label: 'Bio' %>
+  <%= label_tag :is_owner, 'Are you a pet owner? [Only click yes if you are registering a pet to be available for bookings!]' %>
+  <%= f.radio_button :is_owner, true %> Yes
+  <%= f.radio_button :is_owner, false %> No
+  <br>
+  <%= f.submit %>
+<% end %>
+
 <hr>
 
 <div class="user-pets">
