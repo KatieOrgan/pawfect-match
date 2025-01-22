@@ -1,3 +1,15 @@
+<div class="navbar-pets">
+    <%= link_to "#", class: "navbar-logo" do %>
+      <i class="fa-light fa-paw" style="color: #050505;"></i>
+      <% end %>
+      <div>
+        <%= link_to "Home", root_path %>
+        <%# <% link_to "New Category", new_category_path %>
+      </div>
+</div>
+
+
+<%# <i class="fa-light fa-paw" style="color: #050505;"></i> %>
 <ul>
   <% if user_signed_in? %>
     <li><%= link_to "Home", root_path %></li>

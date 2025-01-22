@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   devise_for :users
-  root to: 'pets#index'
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -10,6 +9,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  root to: "pets#index"
   resources :pets, only: [:index, :show]
   resources :bookings, only: [:index, :new, :create, :edit, :update, :destroy]
   resources :users, except: [:index]
