@@ -73,3 +73,12 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+group :development, :test do
+  gem 'faker', '~> 3.5.1'
+end
+
+gem 'ostruct'
+
+gem 'cloudinary', '~> 1.25.0'
+gem 'carrierwave', '~> 2.2.3'

@@ -5,7 +5,9 @@ class Booking < ApplicationRecord
   validates :start_date, presence: true
   validates :end_date, presence: true
   validates :status, presence: true
-  validates :end_date_after_start_date
+  validates :user_id, presence: true
+  validates :pet_id, presence: true
+  validate :end_date_after_start_date
 
   private
 

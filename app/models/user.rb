@@ -3,15 +3,23 @@ class User < ApplicationRecord
   has_many :bookings, dependent: :destroy
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+
+  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable
+
   validates :username, presence: true, uniqueness: true
   validates :first_name, presence: true
   validates :last_name, presence: true
-  validates :profile_pic_url, presence: true, uniqueness: true
-  validates :bio, presence: true
-  validates :is_owner, presence: true
+  validates :profile_pic_url, presence: false, uniqueness: true
+  validates :bio, presence: false
+  validates :is_owner, inclusion: { in: [true, false], message: "must be true or false" }
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :password, presence: true
 
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+  before_validation :set_defaults
+
+  private
+
+  def set_defaults
+    self.is_owner = false if is_owner.nil?
+  end
 end
