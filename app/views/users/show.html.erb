@@ -1,72 +1,80 @@
 <h1>Welcome, <%= @user.first_name %>!</h1>
 
-<div class="profile-info">
-  <h2>Profile Information</h2>
-  <p><strong>Username:</strong> <%= @user.username %></p>
-  <p><strong>Email:</strong> <%= @user.email %></p>
-  <p><strong>First Name:</strong> <%= @user.first_name %></p>
-  <p><strong>Last Name:</strong> <%= @user.last_name %></p>
-  <% if @user.bio.present? %>
-    <p><strong>Bio:</strong> <%= @user.bio %></p>
-  <% end %>
-  <% if @user.profile_pic_url.present? %>
-    <p><strong>Profile Picture:</strong></p>
-    <%= image_tag @user.profile_pic_url, alt: "#{@user.first_name}'s Profile Picture", class: "profile-pic" %>
-  <% end %>
-</div>
+<div class="card-container">
+  <div class="cards">
 
-<%= simple_form_for(@user) do |f| %>
-  <%= f.input :profile_pic_url, as: :file, label: 'Profile Picture' %>
-  <%= f.input :bio, label: 'Bio' %>
-  <%= label_tag :is_owner, 'Are you a pet owner? [Only click yes if you are registering a pet to be available for bookings!]' %>
-  <%= f.radio_button :is_owner, true %> Yes
-  <%= f.radio_button :is_owner, false %> No
-  <br>
-  <%= f.submit %>
-<% end %>
+    <!-- Profile Details -->
+    <div class="card-profile-details">
+      <h2>Your Profile Details</h2>
+      <p><strong>Username:</strong> <%= @user.username %></p>
+      <p><strong>Email:</strong> <%= @user.email %></p>
+      <p><strong>First Name:</strong> <%= @user.first_name %></p>
+      <p><strong>Last Name:</strong> <%= @user.last_name %></p>
+      <% if @user.bio.present? %>
+        <p><strong>Bio:</strong> <%= @user.bio %></p>
+      <% end %>
+      <% if @user.profile_pic_url.present? %>
+        <p><strong>Profile Picture:</strong></p>
+        <%= image_tag @user.profile_pic_url, alt: "#{@user.first_name}'s Profile Picture", class: "profile-pic" %>
+      <% end %>
+    </div>
 
-<hr>
+    <!-- Form to Edit User Info -->
+    <div class="card-user-form">
+      <%= simple_form_for(@user) do |f| %>
+        <%= f.input :profile_pic_url, as: :file, label: 'Profile Picture' %>
+        <%= f.input :bio, label: 'Bio' %>
+        <%= label_tag :is_owner, 'Are you a pet owner? [Only click yes if you are registering a pet to be available for bookings!]' %><br>
+        <%= f.radio_button :is_owner, true %> Yes
+        <%= f.radio_button :is_owner, false %> No
+        <br>
+        <%= f.submit %>
+      <% end %>
+    </div>
 
-<div class="user-pets">
-  <h2>Your Pets</h2>
-  <% if @user.pets.any? %>
-    <ul>
-      <% @user.pets.each do |pet| %>
-        <li>
-          <h3><%= pet.pet_name %></h3>
-          <p><strong>Breed:</strong> <%= pet.breed %></p>
-          <p><strong>Age:</strong> <%= pet.age %> years</p>
-          <p><strong>Description:</strong> <%= pet.description %></p>
-          <% if pet.pet_photo.present? %>
-            <%= image_tag pet.pet_photo, alt: "#{pet.pet_name}", class: "pet-photo" %>
+    <!-- User Pets Section -->
+    <div class="card-user-pets">
+      <h2>Your Pets</h2>
+      <% if @user.pets.any? %>
+        <ul>
+          <% @user.pets.each do |pet| %>
+            <li>
+              <h3><%= pet.pet_name %></h3>
+              <p><strong>Breed:</strong> <%= pet.breed %></p>
+              <p><strong>Age:</strong> <%= pet.age %> years</p>
+              <p><strong>Description:</strong> <%= pet.description %></p>
+              <% if pet.pet_photo.present? %>
+                <%= image_tag pet.pet_photo, alt: "#{pet.pet_name}", class: "pet-photo" %>
+              <% end %>
+            </li>
           <% end %>
-        </li>
+        </ul>
+      <% else %>
+        <p>You have no pets yet.</p>
       <% end %>
-    </ul>
-  <% else %>
-    <p>You have no pets yet.</p>
-  <% end %>
-</div>
+    </div>
 
-<hr>
-
-<div class="recent-bookings">
-  <h2>Recent Bookings</h2>
-  <% if @user.bookings.any? %>
-    <ul>
-      <% @user.bookings.order(created_at: :desc).limit(5).each do |booking| %>
-        <li>
-          Booking for <strong><%= booking.pet.pet_name %></strong>
-          (<%= booking.pet.breed %>)
-          from <%= booking.start_date %> to <%= booking.end_date %>
-        </li>
+    <!-- All Bookings Table -->
+    <div class="card-user-bookings">
+      <h2>Upcoming Bookings</h2>
+      <% upcoming_bookings = @user.bookings.where("start_date >= ?", Date.today).order(:start_date).limit(10) %>
+      <% if upcoming_bookings.any? %>
+        <ul>
+          <% upcoming_bookings.each do |booking| %>
+            <li>
+              Booking for <strong><%= booking.pet.pet_name %></strong>
+              (<%= booking.pet.breed %>)
+              from <%= booking.start_date %> to <%= booking.end_date %>.
+            </li>
+          <% end %>
+        </ul>
+        <%= link_to "See All Bookings", bookings_path, class: "btn btn-secondary btn-sm" %>
+      <% else %>
+        <p>You have no upcoming bookings yet.</p>
       <% end %>
-    </ul>
-  <% else %>
-    <p>You have no bookings yet.</p>
-  <% end %>
-</div>
+    </div>
 
+<!-- Action Buttons -->
 <div class="actions">
   <%= link_to "Edit Profile", edit_user_path(@user), class: "btn btn-primary" %>
   <%= link_to "Back to Pets", pets_path, class: "btn btn-secondary" %>
