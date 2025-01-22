@@ -2,7 +2,7 @@
 
 <% @pets.each do |pet| %>
   <div>
-    <h2><%= pet.pet_name %> (<%= pet.breed %>)</h2>
+    <h2><%= link_to "#{pet.pet_name} (#{pet.breed})", pet_path(pet) %></h2>
     <p><strong>Age:</strong> <%= pet.age %> years</p>
     <p><strong>Size:</strong> <%= pet.size %></p>
     <p><strong>Description:</strong> <%= pet.description %></p>
