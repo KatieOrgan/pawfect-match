@@ -4,20 +4,18 @@
       <% end %>
       <div>
         <%= link_to "Home", root_path %>
+          <% if user_signed_in? %>
+    <%= link_to "My Profile", user_path(current_user) %></li>
+    <%= link_to "Pets", pets_path %></li>
+    <%= link_to "My Bookings", bookings_path %></li>
+    <%= link_to "Sign out", destroy_user_session_path, data: { turbo_method: :delete } %></li>
+  <% else %>
+    <%= link_to "Sign in", new_user_session_path %></li>
+  <% end %>
+
         <%# <% link_to "New Category", new_category_path %>
       </div>
 </div>
 
 
 <%# <i class="fa-light fa-paw" style="color: #050505;"></i> %>
-<ul>
-  <% if user_signed_in? %>
-    <li><%= link_to "Home", root_path %></li>
-    <li><%= link_to "My Profile", user_path(current_user) %></li>
-    <li><%= link_to "Pets", pets_path %></li>
-    <li><%= link_to "My Bookings", bookings_path %></li>
-    <li><%= link_to "Sign out", destroy_user_session_path, data: { turbo_method: :delete } %></li>
-  <% else %>
-    <li><%= link_to "Sign in", new_user_session_path %></li>
-  <% end %>
-</ul>
