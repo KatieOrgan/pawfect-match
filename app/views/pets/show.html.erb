@@ -1,0 +1,15 @@
+<h1><%= @pet.pet_name %></h1>
+
+<p><strong>Breed:</strong> <%= @pet.breed %></p>
+<p><strong>Age:</strong> <%= @pet.age %> years</p>
+<p><strong>Size:</strong> <%= @pet.size %></p>
+<p><strong>Description:</strong> <%= @pet.description %></p>
+<p>
+  <strong>Availability:</strong>
+  <%= @pet.available ? "Available for booking" : "Not available for booking" %>
+</p>
+<%= image_tag @pet.pet_photo if @pet.pet_photo.present? %>
+
+<% if @pet.available %>
+  <%= link_to "Book this pet", new_booking_path(pet_id: @pet.id), class: "btn btn-primary" %>
+<% end %>
