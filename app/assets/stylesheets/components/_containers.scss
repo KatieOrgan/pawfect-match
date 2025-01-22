@@ -1,0 +1,33 @@
+// .banner-container {
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   flex-direction: column;
+//   border: solid 1px white;
+//   width: 500px;
+//   padding: 20px;
+// }
+
+/* .cards-container {
+  /* display: flex; */
+  /* text-align: center;  justify-content: center; */
+  /* border: solid 1px white;
+  width: 500px;
+  padding: 20px;
+} */
+
+.text-center {
+  text-align: center;
+  color: #ADA991;
+}
+
+.card-container {
+  margin-left: 20px;
+  margin-right: 20px;
+  display: flex;
+  /* align-items: center; */
+  flex-direction: row;
+  justify-content: space-around;
+  height: 2000px;
+  padding-top: 20px;
+}
