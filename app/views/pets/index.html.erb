@@ -1,10 +1,17 @@
 <h1>Available Pets</h1>
 
-<% @pets.each do |pet| %>
-  <div>
-    <h2><%= link_to "#{pet.pet_name} (#{pet.breed})", pet_path(pet) %></h2>
-    <p><strong>Age:</strong> <%= pet.age %> years</p>
-    <p><strong>Size:</strong> <%= pet.size %></p>
-    <p><strong>Description:</strong> <%= pet.description %></p>
+<div class="card-container">
+  <div class="cards">
+
+    <% @pets.each do |pet| %>
+        <div class="card-pet">
+
+        <h2><%= link_to "#{pet.pet_name} (#{pet.breed})", pet_path(pet) %></h2>
+        <img src="https://images.unsplash.com/photo-1517423440428-a5a00ad493e8?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8ZG9nfGVufDB8fDB8fHww" alt="sassy dog">
+        <p><strong>Age:</strong> <%= pet.age %> years</p>
+        <p><strong>Size:</strong> <%= pet.size %></p>
+        <p><strong>Description:</strong> <%= pet.description %></p>
+    </div>
+    <% end %>
   </div>
-<% end %>
+</div>
