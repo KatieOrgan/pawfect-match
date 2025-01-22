@@ -353,8 +353,8 @@ DEPENDENCIES
   cloudinary (~> 1.25.0)
   debug
   devise
-  font-awesome-sass (~> 6.1)
   faker (~> 3.5.1)
+  font-awesome-sass (~> 6.1)
   importmap-rails
   jbuilder
   ostruct
