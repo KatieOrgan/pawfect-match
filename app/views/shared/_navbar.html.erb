@@ -1,8 +1,8 @@
 <div class="navbar-pets">
-  <%= link_to "pets#index", class: "navbar-logo" do %>
-    <%= image_tag 'pawfect_match_logo-removebg-preview (1).png' %>
-  <% end %>
-  <div>
+    <%= link_to root_path, class: "navbar-logo" do %>
+      <%= image_tag 'pawfect_match_logo-removebg-preview (1).png' %>
+      <% end %>
+      <div>
     <%= link_to "Home", root_path %>
     <% if user_signed_in? %>
       <%= link_to "Pets", pets_path %>
@@ -15,8 +15,7 @@
       <%= link_to "Sign in", new_user_session_path %>
     <% end %>
   </div>
-</div>
-
+  </div>
 
 
 <%# <i class="fa-light fa-paw" style="color: #050505;"></i> %>

@@ -8,7 +8,11 @@
   <strong>Availability:</strong>
   <%= @pet.available ? "Available for booking" : "Not available for booking" %>
 </p>
-<%= image_tag @pet.pet_photo if @pet.pet_photo.present? %>
+<% if @pet.pet_photo.attached? %>
+  <%= image_tag url_for(@pet.pet_photo) %>
+<% else %>
+  <p>No photo uploaded.</p>
+<% end %>
 
 <% if @pet.available %>
   <%= link_to "Book this pet", new_booking_path(pet_id: @pet.id), class: "btn btn-primary" %>

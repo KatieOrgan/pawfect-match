@@ -1,12 +1,15 @@
 class UsersController < ApplicationController
   def show
     @user = User.find_by(id: params[:id])
+
     if @user.nil?
       if user_signed_in?
         redirect_to root_path, alert: "User not found."
       else
         redirect_to new_user_session_path, alert: "User not found."
       end
+    else
+      @bookings = @user.bookings.order(start_date: :desc) || []
     end
   end
 
@@ -29,10 +32,15 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
+    @bookings = @user.bookings.order(start_date: :desc) || []
+
     if @user.update(user_params)
-      redirect_to @user, notice: 'User was successfully updated.'
+      # If update succeeds, redirect to the user's profile with a success message
+      redirect_to @user, notice: 'User details updated successfully.'
     else
-      render :edit, status: :unprocessable_entity
+      # If update fails, render the `show` template with an error message
+      flash.now[:alert] = "Failed to update user details."
+      render :show, status: :unprocessable_entity
     end
   end
 
@@ -45,6 +53,17 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:username, :first_name, :last_name, :email, :password, :profile_pic_url, :bio, :is_owner)
+    # Remove `:profile_pic_url` if you're no longer using that column.
+    # Instead, permit `:profile_picture` for Active Storage.
+    params.require(:user).permit(
+      :username,
+      :first_name,
+      :last_name,
+      :email,
+      :password,
+      :bio,
+      :is_owner,
+      :profile_picture
+    )
   end
 end
