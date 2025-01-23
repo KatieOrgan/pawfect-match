@@ -79,6 +79,8 @@ User.destroy_all
   end
 end
 
+# unused comment
+
 # Seed Pets
 
 Pet.create!(
@@ -117,7 +119,7 @@ Pet.create!(
 Pet.create!(
   pet_name: 'Dinky',
   breed: 'Tabby Cat',
-  age: rand(1..20),
+  age: rand(1..5),
   size: 'Medium',
   description: "Luna is a fiercely independent tabby who spends her days lounging in sunbeams and silently judging your life choices from across the room. But every now and then, she’ll surprise you by hopping into your lap and demanding a hug, purring loudly as if to say, 'This doesn’t mean I need you… but don’t stop.'",
   available: [true, false].sample,
@@ -127,7 +129,7 @@ Pet.create!(
 Pet.create!(
   pet_name: 'Noodle',
   breed: 'Sausage Dog',
-  age: rand(1..12),
+  age: rand(1..8),
   size: 'Small',
   description: "Noodle is an energetic dachshund with a knack for sneaking treats when no one’s looking. He’ll need a sitter to take him on his beloved sniff-filled walks, keep his belly rub quota high, and make sure he doesn’t burrow into any forbidden blankets!",
   available: [true, false].sample,
@@ -138,7 +140,7 @@ Pet.create!(
 Pet.create!(
   pet_name: 'Floppy',
   breed: 'Rex Rabbit',
-  age: rand(1..20),
+  age: rand(1..10),
   size: 'Small',
   description: "Floppy is a curious little bunny with a soft, twitchy nose and a love for munching on fresh greens. He needs a sitter to keep his hay pile stocked, his water fresh, and to give him plenty of playtime and gentle ear rubs.",
   available: [true, false].sample,
@@ -146,6 +148,73 @@ Pet.create!(
   pet_photo: 'https://images.unsplash.com/photo-1535241749838-299277b6305f?q=80&w=1346&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
 )
 
+#------
+
+Pet.create!(
+  pet_name: 'Sid & Ralph',
+  breed: 'Abyssinian Guinea Pigs',
+  age: rand(1..8),
+  size: 'Small',
+  description: "TBC.",
+  available: [true, false].sample,
+  user_id: 1,
+  pet_photo: 'https://images.unsplash.com/photo-1548767797-d8c844163c4c?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+)
+
+Pet.create!(
+  pet_name: 'Paws',
+  breed: 'Persian Cat',
+  age: rand(1..8),
+  size: 'Small',
+  description: "TBC",
+  available: [true, false].sample,
+  user_id: 1,
+  pet_photo: 'https://images.unsplash.com/photo-1548366086-7f1b76106622?q=80&w=1352&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+)
+
+Pet.create!(
+  pet_name: 'Carly',
+  breed: 'Cockatiel',
+  age: rand(1..10),
+  size: 'Small',
+  description: "TBC",
+  available: [true, false].sample,
+  user_id: 1,
+  pet_photo: 'https://images.unsplash.com/photo-1458410489211-ba19aa2f2902?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YmlyZCUyMHBldHxlbnwwfHwwfHx8MA%3D%3D'
+)
+
+Pet.create!(
+  pet_name: 'Caramel',
+  breed: 'American Fuzzy Lop Rabbit',
+  age: rand(1..5),
+  size: 'Small',
+  description: "TBC.",
+  available: [true, false].sample,
+  user_id: 1,
+  pet_photo: 'https://images.unsplash.com/photo-1452857297128-d9c29adba80b?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+)
+
+Pet.create!(
+  pet_name: 'Pepe',
+  breed: 'Shihtzu Dog',
+  age: rand(1..12),
+  size: 'Small',
+  description: "TBC",
+  available: [true, false].sample,
+  user_id: 1,
+  pet_photo: 'https://images.unsplash.com/photo-1534361960057-19889db9621e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8RE9HfGVufDB8fDB8fHww'
+)
+
+Pet.create!(
+  pet_name: 'Speckles',
+  breed: 'Syrian Hampspter',
+  age: rand(1..3),
+  size: 'Small',
+  description: "TBC",
+  available: [true, false].sample,
+  user_id: 1,
+  pet_photo: 'https://plus.unsplash.com/premium_photo-1721123258960-f095dff82bc7?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8aGFtcHN0ZXJ8ZW58MHx8MHx8fDA%3D'
+)
   # rescue ActiveRecord::RecordInvalid => e
   #   puts "Pet creation failed: #{e.message}"
   # end
