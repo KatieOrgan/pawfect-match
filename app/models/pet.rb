@@ -9,6 +9,7 @@ class Pet < ApplicationRecord
   belongs_to :user
   has_one_attached :pet_photo
   has_many :bookings, dependent: :destroy
+  has_many_attached :pet_photos
 
   validates :pet_name, presence: true
   validates :breed, presence: true
