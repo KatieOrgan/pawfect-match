@@ -9,13 +9,13 @@
       <div class="card-pet">
 
         <h2><%= pet.pet_name %> (<%= pet.breed %>)</h2>
-          <%= image_tag pet.pet_photo, alt: "#{pet.pet_name} image" %>
-          <p><strong>Age:</strong> <%= pet.age %> years</p>
-          <p><strong>Size:</strong> <%= pet.size %></p>
-          <p><strong>Description:</strong> <%= pet.description %></p>
-          <%# <p><strong>Available:</strong> %>
-        <%#= pet.available ? "Yes" : "No" %>
-      </div>
+        <%= image_tag pet.pet_photo, alt: "#{pet.pet_name} image" %>
+        <p><strong>Age:</strong> <%= pet.age %> years</p>
+        <p><strong>Size:</strong> <%= pet.size %></p>
+        <p><strong>Description:</strong> <%= pet.description.truncate(150) %></p>
+        <%# <p><strong>Available:</strong> %>
+      <%#= pet.available ? "Yes" : "No" %>
+    </div>
     <% end %>
     <% end %>
   </div>
