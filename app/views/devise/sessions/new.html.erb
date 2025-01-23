@@ -1,26 +1,39 @@
-<h1>Welcome to Pawfect Match</h1>
-<h2>Log in</h2>
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+<div class="card-booking-signup d-flex flex-column align-items-center justify-content-center p-5" style="background-color: #FA5655;">
 
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
-
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+    <div class="d-flex flex-column align-items-center justify-content-center">
+    <h1 class="text-white"><strong>Welcome to Pawfect Match</strong></h1>
+    <h3 class="login-text"><strong>LOG IN</strong></h3>
     </div>
-  <% end %>
 
-  <div class="actions">
-    <%= f.submit "Log in" %>
-  </div>
-<% end %>
+    <div class="card-booking mt-4 mb-2 p-4">
+      <div class="form-action d-flex align-items-center justify-content-center">
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+        <div class="field">
+          <%= f.label :email %><br />
+          <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+        </div>
 
-<%= render "devise/shared/links" %>
+        <div class="field">
+          <%= f.label :password %><br />
+          <%= f.password_field :password, autocomplete: "current-password" %>
+        </div>
+
+        <% if devise_mapping.rememberable? %>
+          <div class="field">
+            <%= f.check_box :remember_me %>
+            <%= f.label :remember_me %>
+          </div>
+        <% end %>
+
+        <div class="actions">
+          <%= f.submit "Log in" %>
+        </div>
+      <% end %>
+      </div>
+    </div>
+
+    <div class="d-flex align-items-center justify-content-center mt-2">
+      <%= render "devise/shared/links" %>
+    </div>
+
+</div>
