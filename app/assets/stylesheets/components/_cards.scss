@@ -8,7 +8,7 @@
 
 .card-pet {
   /* overflow: hidden; */
-  height: 410px;
+  height: 450px;
   background: white;
   box-shadow: 0 0 15px rgba(0,0,0,0.2);
   display: flex;
@@ -17,6 +17,7 @@
   width: 400px;
   border: solid 5px $pet-yellow;
   padding-top: 10px;
+  padding-bottom: 10px;
   border-radius: 5px;
 }
 
@@ -24,7 +25,7 @@
   height: 70%;
   width: 300px;
   object-fit: cover;
-  padding-top: 20px;
+  padding-top: 10px;
 }
 
 .card-pet h2 {
