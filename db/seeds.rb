@@ -53,22 +53,5 @@ User.all.each do |user|
   end
 end
 
-# Seed Bookings
-User.all.each do |user|
-  available_pets = Pet.where(available: true).sample(5)
-  available_pets.each do |pet|
-    begin
-      Booking.create!(
-        start_date: Faker::Date.between(from: Date.today, to: Date.today + 30),
-        end_date: Faker::Date.between(from: Date.today + 31, to: Date.today + 60),
-        status: %w[Pending Approved Declined].sample,
-        user_id: user.id,
-        pet_id: pet.id
-      )
-    rescue ActiveRecord::RecordInvalid => e
-      puts "Booking creation failed: #{e.message}"
-    end
-  end
-end
-
-puts "Seeding complete!"
+# Remove seeded bookings to rely on user-generated bookings only
+puts "Seeding complete! Bookings are now user-generated."
