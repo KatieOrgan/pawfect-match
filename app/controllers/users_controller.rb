@@ -3,9 +3,9 @@ class UsersController < ApplicationController
     @user = User.find_by(id: params[:id])
     if @user.nil?
       if user_signed_in?
-        redirect_to authenticated_root_path, alert: "User not found."
+        redirect_to root_path, alert: "User not found."
       else
-        redirect_to unauthenticated_root_path, alert: "User not found."
+        redirect_to new_user_session_path, alert: "User not found."
       end
     end
   end
