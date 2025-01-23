@@ -79,6 +79,8 @@ User.destroy_all
   end
 end
 
+# unused comment
+
 # Seed Pets
 
 Pet.create!(

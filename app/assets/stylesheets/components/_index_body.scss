@@ -3,14 +3,6 @@ html, body {
   margin: 0;
 }
 
-/* Make body a flex container */
-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* Push footer to bottom */
-  min-height: 100vh; /* Ensure the body takes up the full viewport height */
-}
-
 // body {
 //   display: flex;
 //   flex-direction: column;
