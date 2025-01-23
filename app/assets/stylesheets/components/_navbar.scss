@@ -21,13 +21,13 @@ a {
 }
 
 .profile-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-  cursor: pointer;
+  width: 40px;       /* Adjust size as needed */
+  height: 40px;      /* Maintain square dimensions */
+  border-radius: 50%; /* Make the image circular */
+  object-fit: cover; /* Ensure proper scaling */
+  cursor: pointer;   /* Pointer cursor for interactivity */
 }
 
 .profile-link {
-  text-decoration: none;
+  text-decoration: none; /* Remove underline from link */
 }
