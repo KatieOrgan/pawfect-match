@@ -1,24 +1,30 @@
 <div class="navbar-pets">
-<div class="logo-container-shadow"></div>
-  <div class="logo-container">
-    <%= link_to root_path, class: "navbar-logo" do %>
-      <%= image_tag 'pawfect_match_logo-removebg-preview (1).png' %>
-    <% end %>
+  <div class="navbar-left">
+    <div class="logo-container-shadow"></div>
+
+    <div class="logo-container">
+      <%= link_to root_path, class: "navbar-logo" do %>
+        <%= image_tag 'pawfect_match_logo-removebg-preview (1).png' %>
+      <% end %>
+    </div>
+    <div class="register-pet-btn">
+      <%= link_to "Register a Pet", new_pet_path, class: "btn btn-secondary mb-3" %>
+    </div>
   </div>
-      <div>
+  <div class="navbar-right">
     <%= link_to "Home", root_path %>
     <% if user_signed_in? %>
       <%= link_to "Pets", pets_path %>
       <%= link_to "My Bookings", bookings_path %>
       <%= link_to "Sign out", destroy_user_session_path, data: { turbo_method: :delete } %>
-          <%= link_to user_path(current_user), class: "profile-link" do %>
+      <%= link_to user_path(current_user), class: "profile-link" do %>
         <%= image_tag 'profileicon.jpg', alt: 'Profile', class: 'profile-icon' %>
       <% end %>
     <% else %>
       <%= link_to "Sign in", new_user_session_path %>
     <% end %>
   </div>
-  </div>
+</div>
 
 
 <%# <i class="fa-light fa-paw" style="color: #050505;"></i> %>
