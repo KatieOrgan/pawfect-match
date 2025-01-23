@@ -46,12 +46,6 @@ puts "User created with an attached profile picture!"
 
 puts "Creating some pets..."
 
-# -------------------------------
-# Now let's seed some pets
-# -------------------------------
-
-puts "Creating some pets..."
-
 ziggy = Pet.create!(
   pet_name: 'Ziggy',
   breed: 'Springer Spaniel',
