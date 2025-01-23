@@ -1,0 +1,5 @@
+<%= form_with model: @booking, local: true do |form| %>
+  <%= form.date_field :start_date, label: "Start Date" %>
+  <%= form.date_field :end_date, label: "End Date" %>
+  <%= form.submit "Update Booking", class: "btn btn-success" %>
+<% end %>

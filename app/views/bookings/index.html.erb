@@ -1,6 +1,4 @@
-<div class="d-flex align-items-center justify-content-center">
-  <h1><strong>My Bookings</strong></h1>
-</div>
+<h1>My Bookings</h1>
 
 <% if @bookings.any? %>
   <table class="table table-striped">
@@ -14,18 +12,22 @@
       </tr>
     </thead>
     <tbody>
-      <% @bookings.each do |booking| %>
-        <tr>
-          <td><%= booking.pet.pet_name %></td>
-          <td><%= booking.start_date %></td>
-          <td><%= booking.end_date %></td>
-          <td><%= booking.status %></td>
-          <td>
-            <%= link_to "Edit", edit_booking_path(booking), class: "btn btn-secondary btn-sm" %>
-            <%= link_to "Cancel", booking_path(booking), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger btn-sm" %>
-          </td>
-        </tr>
-      <% end %>
+    <% @bookings.each do |booking| %>
+      <tr>
+        <td><%= booking.pet.pet_name %></td>
+        <td><%= booking.start_date %></td>
+        <td><%= booking.end_date %></td>
+        <td><%= booking.status %></td>
+        <td>
+          <%= link_to 'Edit', edit_booking_path(booking), class: "btn btn-secondary btn-sm" %>
+            <form action="<%= booking_path(booking) %>" method="POST" style="display: inline;">
+            <input type="hidden" name="_method" value="delete">
+            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Remove</button>
+          </form>
+        </td>
+      </tr>
+    <% end %>
     </tbody>
   </table>
 <% else %>
