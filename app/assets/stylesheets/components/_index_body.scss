@@ -3,6 +3,17 @@ html, body {
   margin: 0;
 }
 
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1;
+  min-height: 80vh;
+}
+
 // body {
 //   display: flex;
 //   flex-direction: column;
