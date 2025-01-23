@@ -28,7 +28,15 @@
   /* align-items: center; */
   flex-direction: row;
   justify-content: space-around;
-  height: 2000px;
-  padding-top: 20px;
+  height: 3000px;
+  padding: 60px;
+}
+
+.show-container {
+  height: 1000px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 

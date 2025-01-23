@@ -1,19 +1,32 @@
+
+
+<div class="show-container">
+<div class="show-card">
 <h1><%= @pet.pet_name %></h1>
 
 <p><strong>Breed:</strong> <%= @pet.breed %></p>
 <p><strong>Age:</strong> <%= @pet.age %> years</p>
 <p><strong>Size:</strong> <%= @pet.size %></p>
+
+<%= image_tag @pet.pet_photo if @pet.pet_photo.present? %>
 <p><strong>Description:</strong> <%= @pet.description %></p>
 <p>
   <strong>Availability:</strong>
   <%= @pet.available ? "Available for booking" : "Not available for booking" %>
 </p>
-<% if @pet.pet_photo.attached? %>
-  <%= image_tag url_for(@pet.pet_photo) %>
-<% else %>
-  <p>No photo uploaded.</p>
-<% end %>
+<div class="booking-section">
 
 <% if @pet.available %>
-  <%= link_to "Book this pet", new_booking_path(pet_id: @pet.id), class: "btn btn-primary" %>
+  <%= link_to "Book #{ @pet.pet_name }", new_booking_path(pet_id: @pet.id), class: "book-btn" %>
 <% end %>
+</div>
+
+</div>
+</div>
+
+
+<%# if @pet.pet_photo.attached? %>
+  <%#= image_tag url_for(@pet.pet_photo) %>
+<%# else %>
+  <%# <p>No photo uploaded.</p> %>
+<%# end %>

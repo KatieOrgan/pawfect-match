@@ -1,35 +1,66 @@
 .navbar-pets {
   display: flex;
+  height: 80px;
   justify-content: space-between;
   align-items: center;
   background: rgb(233, 223, 146);
   padding: 10px 20px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative; /* Ensures positioning for the shadow container */
+}
+
+.logo-container {
+  position: relative; /* Ensures it can stack and overlap the shadow container */
+  display: inline-block;
+  width: 150px;
+  height: 150px;
+  padding-bottom: 30px;
+  padding-top: 25px;
+  padding-left: 28px;
+  padding-right: 28px;
+  margin: 5px 5px 5px 20px;
+  background: rgb(233, 223, 146);
+  border-radius: 35%;
+  overflow: hidden;
+  text-align: center;
+  z-index: 10; /* Keeps this container above the shadow container */
+}
+
+.logo-container-shadow {
+  position: absolute; /* Positions it relative to the navbar-pets container */
+  top: -5;
+  left: 5;
+  width: 150px;
+  height: 150px;
+  margin: 5px 5px 5px 20px;
+  background: rgb(233, 223, 146); /* Matches the logo container */
+  border-radius: 35%;
+  box-shadow: 0px 5px 8px rgba(0, 0, 0, 0.1); /* Same shadow as navbar */
+  z-index: -1; /* Places this container below the main logo container */
 }
 
 .navbar-logo img {
-  width: 60px;
+  width: 100%;
   height: auto;
-  /* margin: 5px 5px 5px 20px; */
+  display: block;
 }
 
 a {
   text-decoration: none;
-  color: black;
-  /* margin-left: 30px; */
+  color: white;
   margin: 0 5px;
 }
 
 .profile-icon {
-  width: 40px;       /* Adjust size as needed */
-  height: 40px;      /* Maintain square dimensions */
-  border-radius: 50%; /* Make the image circular */
-  object-fit: cover; /* Ensure proper scaling */
-  cursor: pointer;   /* Pointer cursor for interactivity */
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
 }
 
 .profile-link {
-  text-decoration: none; /* Remove underline from link */
+  text-decoration: none;
 }
 
 .navbar-left {
