@@ -33,6 +33,8 @@ User.destroy_all
   end
 end
 
+# unused comment
+
 # Seed Pets
 User.all.each do |user|
   rand(1..3).times do
