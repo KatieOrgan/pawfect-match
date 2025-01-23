@@ -14,15 +14,7 @@
   <strong>Availability:</strong>
   <%= @pet.available ? "Available for booking" : "Not available for booking" %>
 </p>
-<<<<<<< HEAD
 <div class="booking-section">
-=======
-<% if @pet.pet_photo.attached? %>
-  <%= image_tag url_for(@pet.pet_photo) %>
-<% else %>
-  <p>No photo uploaded.</p>
-<% end %>
->>>>>>> main
 
 <% if @pet.available %>
   <%= link_to "Book #{ @pet.pet_name }", new_booking_path(pet_id: @pet.id), class: "book-btn" %>
@@ -31,3 +23,10 @@
 
 </div>
 </div>
+
+
+<%# if @pet.pet_photo.attached? %>
+  <%#= image_tag url_for(@pet.pet_photo) %>
+<%# else %>
+  <%# <p>No photo uploaded.</p> %>
+<%# end %>
