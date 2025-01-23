@@ -2,8 +2,24 @@
   <h1><strong>Available Pets</strong></h1>
 </div>
 
+<div class="container">
+<div class="row justify-content-center">
+  <div class="col-sm-8 my-3">
+  <%= form_with url: pets_path, method: :get, class: "d-flex rounded border border-warning" do %>
+    <%= text_field_tag :query,
+      params[:query],
+      class: "form-control",
+      placeholder: "Type a keyword"
+      %>
+    <%= submit_tag "Search", name: "", class: "btn btn-danger text-white" %>
+  <% end %>
+</div>
+</div>
+</div>
+
 <div class="card-container">
   <div class="cards">
+
     <% @pets.each do |pet| %>
     <%= link_to pet_path(pet) do %>
       <div class="card-pet">
@@ -19,4 +35,5 @@
     <% end %>
     <% end %>
   </div>
+</div>
 </div>
