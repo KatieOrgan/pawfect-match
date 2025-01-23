@@ -2,7 +2,11 @@ class PetsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @pets = Pet.all
+    if params[:query].present?
+      @pets = Pet.search_by_breed_and_size_and_description_and_pet_name_and_available(params[:query])
+    else
+      @pets = Pet.all
+    end
   end
 
   def show
@@ -15,6 +19,7 @@ class PetsController < ApplicationController
 
   def create
     @pet = Pet.new(pet_params)
+    @pet.user = current_user
     if @pet.save
       redirect_to @pet, notice: 'Pet was successfully added.'
     else
@@ -43,7 +48,19 @@ class PetsController < ApplicationController
 
   private
 
+  def authorize_owner
+    unless current_user.is_owner
+      redirect_to pets_path, alert: 'Only pet owners can add pets!'
+    end
+  end
+
   def pet_params
-    params.require(:pet).permit(:pet_name, :breed, :age, :size, :description, :available, :pet_photo, :user_id)
+    params.require(:pet).permit(:pet_name,
+                                :breed,
+                                :age,
+                                :size,
+                                :description,
+                                :available,
+                                :pet_photo)
   end
 end

@@ -1,22 +1,51 @@
 <div class="d-flex align-items-center justify-content-center">
-  <h1><strong>Available Pets</strong></h1>
+  <h1>All Pets</h1>
 </div>
+
+<div class="container">
+<div class="row justify-content-center">
+  <div class="col-sm-8 my-3">
+  <%= form_with url: pets_path, method: :get, class: "d-flex rounded border border-warning" do %>
+    <%= text_field_tag :query,
+      params[:query],
+      class: "form-control",
+      placeholder: "Type a keyword"
+      %>
+    <%= submit_tag "Search", name: "", class: "btn btn-danger text-white" %>
+  <% end %>
+</div>
+</div>
+</div>
+
+<%= link_to "Register a Pet", new_pet_path, class: "btn btn-primary mb-3" %>
+
 
 <div class="card-container">
   <div class="cards">
-    <% @pets.each do |pet| %>
-    <%= link_to pet_path(pet) do %>
-        <div class="card-pet">
 
-        <h2><%= pet.pet_name %> (<%= pet.breed %>)</h2>
-        <%= image_tag pet.pet_photo, alt: "#{pet.pet_name} image" %>
-        <p><strong>Age:</strong> <%= pet.age %> years</p>
-        <p><strong>Size:</strong> <%= pet.size %></p>
-        <p><strong>Description:</strong> <%= pet.description.truncate(150) %></p>
-        <%# <p><strong>Available:</strong> %>
-      <%#= pet.available ? "Yes" : "No" %>
-    </div>
-    <% end %>
+    <% @pets.each do |pet| %>
+      <%= link_to pet_path(pet), class: "card-pet-link" do %>
+        <div class="card-pet" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+          <h2><%= "#{pet.pet_name} (#{pet.breed})" %></h2>
+
+          <% if pet.pet_photo.attached? %>
+            <%= image_tag url_for(pet.pet_photo), alt: "#{pet.pet_name} image", width: 200 %>
+          <% else %>
+            <p><em>No photo uploaded</em></p>
+          <% end %>
+
+          <p><strong>Age:</strong> <%= pet.age %> years</p>
+          <p><strong>Size:</strong> <%= pet.size %></p>
+          <p><strong>Description:</strong> <%= pet.description.truncate(150) %></p>
+
+          <% if pet.available? %>
+            <p><strong>Status:</strong> Available for Booking</p>
+          <% else %>
+            <p><strong>Status:</strong> Not Available</p>
+          <% end %>
+        </div>
+      <% end %>
     <% end %>
   </div>
+</div>
 </div>
