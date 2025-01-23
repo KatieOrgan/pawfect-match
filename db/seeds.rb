@@ -8,52 +8,6 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-
-# # Clear existing data
-# Booking.destroy_all
-# Pet.destroy_all
-# User.destroy_all
-
-# # Seed Users
-# 10.times do
-#   begin
-#     User.create!(
-#       username: Faker::Internet.username,
-#       first_name: Faker::Name.first_name,
-#       last_name: Faker::Name.last_name,
-#       email: Faker::Internet.email,
-#       password: Faker::Internet.password(min_length: 8),
-#       profile_pic_url: "https://via.placeholder.com/150?unique=#{SecureRandom.uuid}",
-#       bio: Faker::Lorem.sentence,
-#       is_owner: [true, false].sample
-#     )
-#   rescue ActiveRecord::RecordInvalid => e
-#     puts "User creation failed: #{e.message}"
-#   end
-# end
-
-# # Seed Pets
-# User.all.each do |user|
-#   rand(1..3).times do
-#     begin
-#       Pet.create!(
-#         pet_name: Faker::Creature::Dog.name,
-#         breed: Faker::Creature::Dog.breed,
-#         age: rand(1..15),
-#         size: %w[Small Medium Large].sample,
-#         description: Faker::Lorem.paragraph,
-#         available: [true, false].sample,
-#         user_id: user.id,
-#         pet_photo: "https://images.unsplash.com/photo-1517423440428-a5a00ad493e8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8ZG9nfGVufDB8fDB8fHww" # Replace Faker::LoremFlickr.image for reliability
-#       )
-#     rescue ActiveRecord::RecordInvalid => e
-#       puts "Pet creation failed: #{e.message}"
-#     end
-#   end
-# end
-
-# # Remove seeded bookings to rely on user-generated bookings only
-# puts "Seeding complete! Bookings are now user-generated."
 #--------------------------------------------------------
 require 'faker'
 
@@ -149,11 +103,12 @@ Pet.create!(
 #------
 
 Pet.create!(
-  pet_name: 'Sid & Ralph',
+  pet_name: 'Crunch & Merge',
   breed: 'Abyssinian Guinea Pigs',
   age: rand(1..8),
   size: 'Small',
-  description: "TBC.",
+  description: "Meet the dynamic duo, Crunch and Munch, two brother guinea pigs with hearts as big as their appetites! Crunch is the curious one, always popping his little head out of their cozy
+  hideaway to see what’s going on, while Munch is the laid-back, food-loving sidekick who’ll happily munch on his hay and let you scratch behind his ears.",
   available: [true, false].sample,
   user_id: 1,
   pet_photo: 'https://images.unsplash.com/photo-1548767797-d8c844163c4c?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
@@ -164,7 +119,9 @@ Pet.create!(
   breed: 'Persian Cat',
   age: rand(1..8),
   size: 'Small',
-  description: "TBC",
+  description: "Meet Paws, a fluffy ball of charm with a purr that can melt anyone’s heart. She’s a gentle soul with soft, cloud-like fur that’s just begging to be stroked. Whiskers
+  loves curling up in sunbeams, but don’t let that fool you—she’s also the queen of playful zoomies around the house. Her big, round eyes will steal your heart as she looks up at you,
+  waiting for her next adventure or a cuddle session, whichever comes first!",
   available: [true, false].sample,
   user_id: 1,
   pet_photo: 'https://images.unsplash.com/photo-1548366086-7f1b76106622?q=80&w=1352&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
@@ -175,7 +132,8 @@ Pet.create!(
   breed: 'Cockatiel',
   age: rand(1..10),
   size: 'Small',
-  description: "TBC",
+  description: "Meet Carly, the sweetest little cockatiel with a heart full of song and feathers full of personality! Carly loves to serenade you with cheerful whistles and soft chirps. She’s a social butterfly who’s always ready for a chat or a gentle head scratch. Whether she's flapping her wings
+  with excitement or softly tilting her head to listen to you, Carly will quickly become your most charming and loyal companion!",
   available: [true, false].sample,
   user_id: 1,
   pet_photo: 'https://images.unsplash.com/photo-1458410489211-ba19aa2f2902?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YmlyZCUyMHBldHxlbnwwfHwwfHx8MA%3D%3D'
@@ -186,7 +144,9 @@ Pet.create!(
   breed: 'American Fuzzy Lop Rabbit',
   age: rand(1..5),
   size: 'Small',
-  description: "TBC.",
+  description: "Meet Caramel, the fluffiest bundle of joy you’ll ever meet! With her soft, chocolate-brown fur and big, curious eyes, she’s as sweet as her name suggests. Caramel loves hopping
+  around her space, exploring every nook and cranny, but she’s equally happy to curl up in a cozy corner for a nap. Her ears perk up at the sound of a treat being offered, and she’ll give you a
+  gentle nudge with her little nose, asking for a cuddle or a snack.",
   available: [true, false].sample,
   user_id: 1,
   pet_photo: 'https://images.unsplash.com/photo-1452857297128-d9c29adba80b?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
@@ -197,7 +157,8 @@ Pet.create!(
   breed: 'Shihtzu Dog',
   age: rand(1..12),
   size: 'Small',
-  description: "TBC",
+  description: "This sweet Shih Tzu may be small, but he’s got a personality that fills the room. Always wagging his tail with excitement, Pepe is a social butterfly who loves to be the center of attention.
+  He’s as cute as a button with his silky fur and expressive eyes, and he’s always up for a snuggle or a game of fetch!",
   available: [true, false].sample,
   user_id: 1,
   pet_photo: 'https://images.unsplash.com/photo-1534361960057-19889db9621e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8RE9HfGVufDB8fDB8fHww'
@@ -208,7 +169,8 @@ Pet.create!(
   breed: 'Syrian Hampspter',
   age: rand(1..3),
   size: 'Small',
-  description: "TBC",
+  description: "Meet Speckles, the cutest little ball of energy you’ll ever see! Speckles is a night owl, darting around her wheel and burrowing in her bedding, making sure every corner of her cage is
+  thoroughly inspected. She’s got a soft spot for treats and will eagerly stuff her cheeks full, looking like the happiest hamster on the block. Speckles might be small, but she’s got a big personality and will fill your day with joy and tiny, adorable antics!",
   available: [true, false].sample,
   user_id: 1,
   pet_photo: 'https://plus.unsplash.com/premium_photo-1721123258960-f095dff82bc7?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8aGFtcHN0ZXJ8ZW58MHx8MHx8fDA%3D'
@@ -221,68 +183,3 @@ Pet.create!(
 puts "Seeding complete! Bookings are now user-generated."
 
 # --------------------------------------------------------
-
-# # Clear existing data
-# Booking.destroy_all
-# Pet.destroy_all
-# User.destroy_all
-# # Seed Users
-# 1.times do
-#   begin
-#     User.create!(
-#       username: "test",
-#       first_name: Faker::Name.first_name,
-#       last_name: Faker::Name.last_name,
-#       email: Faker::Internet.email,
-#       password: "123456",
-#       profile_pic_url: "https://via.placeholder.com/150?unique=#{SecureRandom.uuid}",
-#       bio: Faker::Lorem.sentence,
-#       is_owner: [true, false].sample
-#     )
-#   rescue ActiveRecord::RecordInvalid => e
-#     puts "User creation failed: #{e.message}"
-#   end
-# end
-# # Seed Pets
-# User.all.each do |user|
-#   6.times do
-#     begin
-#       # Randomly assign a species
-#       species = %w[Dog Cat Bird Rabbit].sample
-#       # Generate relevant data based on species
-#       case species
-#       when "Dog"
-#         pet_name = Faker::Creature::Dog.name
-#         breed = Faker::Creature::Dog.breed
-#         pet_photo = "https://images.unsplash.com/photo-1517423440428-a5a00ad493e8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8ZG9nfGVufDB8fDB8fHww"
-#       when "Cat"
-#         pet_name = Faker::Creature::Cat.name
-#         breed = Faker::Creature::Cat.breed
-#         pet_photo = "https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8Y2F0fGVufDB8fDB8fHww"
-#       when "Bird"
-#         pet_name = Faker::Name.first_name # Birds don’t have specific name generators in Faker
-#         breed = %w[Parrot Canary Finch Sparrow].sample
-#         pet_photo = "https://images.unsplash.com/photo-1559582930-7c1f38468f31?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmlyZHxlbnwwfHwwfHx8MA"
-#       when "Rabbit"
-#         pet_name = Faker::Name.first_name
-#         breed = %w[Holland_Lop Netherland_Dwarf Rex Lionhead].sample
-#         pet_photo = "https://images.unsplash.com/photo-1582901600978-59d8fcb6f036?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmFiYml0fGVufDB8fDB8fHww"
-#       end
-#       # Create the pet
-#       Pet.create!(
-#         pet_name: pet_name,
-#         breed: species,
-#         age: rand(1..15),
-#         size: %w[Small Medium Large].sample,
-#         description: Faker::Lorem.paragraph,
-#         available: [true, false].sample,
-#         user_id: user.id,
-#         pet_photo: pet_photo
-#       )
-#     rescue ActiveRecord::RecordInvalid => e
-#       puts "Pet creation failed: #{e.message}"
-#     end
-#   end
-# end
-# # Remove seeded bookings to rely on user-generated bookings only
-# puts "Seeding complete! Bookings are now user-generated."
