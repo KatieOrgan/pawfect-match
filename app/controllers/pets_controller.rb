@@ -2,7 +2,11 @@ class PetsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @pets = Pet.all
+    if params[:query].present?
+      @pets = Pet.search_by_breed_and_size_and_description_and_pet_name_and_available(params[:query])
+    else
+      @pets = Pet.all
+    end
   end
 
   def show
