@@ -63,3 +63,46 @@
   }
 }
 
+#myVideo {
+  position: fixed; /* Keep the video in a fixed position relative to the viewport */
+  top: 0; /* Align to the top of the page */
+  left: 0; /* Align to the left of the page */
+  width: 100%; /* Stretch to full width */
+  height: 100%; /* Stretch to full height */
+  object-fit: cover; /* Ensure the video covers the entire viewport without distortion */
+  z-index: -1; /* Send the video to the background */
+}
+
+/* Content container styles */
+.landing-container {
+  position: absolute; /* Overlay on top of the video */
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Adjust for exact center */
+  text-align: center; /* Center-align text */
+  z-index: 1; /* Ensure content is above the video */
+}
+
+.landing-text {
+  font-size: 3rem; /* Adjust size as needed */
+}
+
+.tagline {
+  font-size: 1.5rem; /* Adjust tagline size */
+}
+
+/* Button styles (optional) */
+.btn-danger {
+  background-color: #ff6b6b; /* Soft red */
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+  background-color: #ff4040; /* Slightly darker red on hover */
+  transform: scale(1.05); /* Subtle scaling on hover */
+}
