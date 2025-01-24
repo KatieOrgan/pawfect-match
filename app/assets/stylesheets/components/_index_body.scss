@@ -49,7 +49,7 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
 /* Apply the custom cursor to the whole body */
-  cursor: url("cursor-paw-red.png"), auto;
+  cursor: url("cursor-paw-red-2-removebg-preview.png"), auto;
 }
 
 #myVideo {
@@ -63,7 +63,7 @@ body {
 
 /* Override pointer cursor on clickable elements */
 a, button, .clickable, .cursor-other {
-  cursor: url("cursor-paw-red.png"), auto !important;
+  cursor: url("cursor-paw-red-2-removebg-preview.png"), auto !important;
 }
 
 .login-text {
