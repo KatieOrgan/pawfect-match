@@ -2,38 +2,45 @@
   <h1><strong>My Matches</strong></h1>
 </div>
 
-<div class="card-booking d-flex flex-column align-items-center justify-content-center m-5 mt-4 p-4">
-  <% if @bookings.any? %>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Pet Name</th>
-          <th>Start Date</th>
-          <th>End Date</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-      <% @bookings.each do |booking| %>
-        <tr>
-          <td><%= booking.pet.pet_name %></td>
-          <td><%= booking.start_date %></td>
-          <td><%= booking.end_date %></td>
-          <td><%= booking.status %></td>
-          <td>
-            <%= link_to 'Edit', edit_booking_path(booking), class: "btn btn-secondary btn-sm text-white" %>
-              <form action="<%= booking_path(booking) %>" method="POST" style="display: inline;">
-              <input type="hidden" name="_method" value="delete">
-              <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-              <button type="submit" class="btn btn-danger btn-sm text-white" onclick="return confirm('Are you sure?')">Remove</button>
-            </form>
-          </td>
-        </tr>
-      <% end %>
-      </tbody>
-    </table>
-  <% else %>
-    <p>You have no matches yet.</p>
-  <% end %>
+<div class="container d-flex flex-column align-items-center">
+  <div class="card-booking d-flex flex-column align-items-center justify-content-center mb-3 mt-4 p-4">
+    <% if @bookings.any? %>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Pet Name</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+        <% @bookings.each do |booking| %>
+          <tr>
+            <td><%= booking.pet.pet_name %></td>
+            <td><%= booking.start_date %></td>
+            <td><%= booking.end_date %></td>
+            <td><%= booking.status %></td>
+            <td>
+              <%= link_to 'Edit', edit_booking_path(booking), class: "btn btn-secondary btn-sm text-white" %>
+                <form action="<%= booking_path(booking) %>" method="POST" style="display: inline;">
+                <input type="hidden" name="_method" value="delete">
+                <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                <button type="submit" class="btn btn-danger btn-sm text-white" onclick="return confirm('Are you sure?')">Remove</button>
+              </form>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p>You have no matches yet.</p>
+    <% end %>
+  </div>
+
+  <div class="back-link mb-4">
+    <%= link_to "Back to All Pets", pets_path, class: "btn btn-secondary text-white" %>
+  </div>
+
 </div>
