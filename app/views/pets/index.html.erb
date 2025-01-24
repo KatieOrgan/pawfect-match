@@ -3,18 +3,35 @@
 </div>
 
 <div class="container">
-<div class="row justify-content-center">
-  <div class="col-sm-8 my-3">
-  <%= form_with url: pets_path, method: :get, class: "d-flex rounded border border-warning" do %>
-    <%= text_field_tag :query,
-      params[:query],
-      class: "form-control",
-      placeholder: "Type a keyword"
-      %>
-    <%= submit_tag "Search", name: "", class: "btn btn-danger text-white" %>
-  <% end %>
-</div>
-</div>
+  <div class="row justify-content-center">
+    <div class="col-sm-8 my-3">
+      <%= form_with url: pets_path, method: :get, class: "d-flex flex-column rounded border border-warning p-3" do %>
+        <!-- Keyword Search -->
+        <%= text_field_tag :query, params[:query], class: "form-control mb-3", placeholder: "Type a keyword" %>
+
+        <!-- Filter by Breed -->
+        <div class="form-group mb-3">
+          <%= label_tag :breed, "Filter by Breed" %>
+          <%= select_tag :breed, options_for_select(["All Breeds"] + Pet.distinct.pluck(:breed), params[:breed]), class: "form-select" %>
+        </div>
+
+        <!-- Filter by Size -->
+        <div class="form-group mb-3">
+          <%= label_tag :size, "Filter by Size" %>
+          <%= select_tag :size, options_for_select(["All Sizes"] + Pet.distinct.pluck(:size), params[:size]), class: "form-select" %>
+        </div>
+
+        <!-- Filter by Availability -->
+        <div class="form-group mb-3">
+          <%= label_tag :available, "Filter by Availability" %>
+          <%= select_tag :available, options_for_select([["All", nil], ["Available", true], ["Not Available", false]], params[:available]), class: "form-select" %>
+        </div>
+
+        <!-- Submit Button -->
+        <%= submit_tag "Filter", class: "btn btn-danger text-white mt-2" %>
+      <% end %>
+    </div>
+  </div>
 </div>
 
 <div class="card-container">

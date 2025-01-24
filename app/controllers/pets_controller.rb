@@ -2,10 +2,22 @@ class PetsController < ApplicationController
   before_action :authenticate_user!
 
   def index
+    @pets = Pet.all
+
     if params[:query].present?
-      @pets = Pet.search_by_breed_and_size_and_description_and_pet_name_and_available(params[:query])
-    else
-      @pets = Pet.all
+      @pets = @pets.search_by_breed_and_size_and_description_and_pet_name_and_available(params[:query])
+    end
+
+    if params[:breed].present? && params[:breed] != "All Breeds"
+      @pets = @pets.where(breed: params[:breed])
+    end
+
+    if params[:size].present? && params[:size] != "All Sizes"
+      @pets = @pets.where(size: params[:size])
+    end
+
+    if params[:available].present?
+      @pets = @pets.where(available: ActiveModel::Type::Boolean.new.cast(params[:available]))
     end
   end
 
