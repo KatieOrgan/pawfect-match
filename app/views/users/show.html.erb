@@ -1,14 +1,12 @@
-<h1>Welcome, <%= @user.first_name %>!</h1>
-
-<div class="actions">
-  <%= link_to "Back to Pets", pets_path, class: "btn btn-secondary" %>
+<div class="d-flex align-items-center justify-content-center mt-5 mb-3">
+  <h1>Welcome, <%= @user.first_name %>!</h1>
 </div>
 
-<div class="card-container">
+<div class="container-profile d-flex flex-column align-items-center justify-content-center">
   <div class="cards">
     <!-- ======================== Profile Details ======================== -->
     <div class="card-profile-details">
-      <h2>Your Profile Details</h2>
+      <h2 class="user-text-heading">Your Profile Details</h2>
 
       <!-- Display Profile Details -->
       <div id="profile-display">
@@ -30,7 +28,7 @@
           <p><strong>Profile Picture:</strong> No profile picture uploaded.</p>
         <% end %>
 
-        <button id="edit-button" class="btn btn-primary mt-2">Edit</button>
+        <button id="edit-button" class="btn btn-warning mt-2">Edit</button>
       </div>
 
       <!-- ======================== Form to Edit Profile Details ======================== -->
@@ -76,46 +74,45 @@
 
     <!-- ======================== User Pets Section ======================== -->
     <div class="card-user-pets">
-    <h2>Your Pets</h2>
-    <% if @user.pets.any? %>
-      <ul>
-        <% @user.pets.each do |pet| %>
-          <li>
-            <h3><%= pet.pet_name %></h3>
-            <p><strong>Breed:</strong> <%= pet.breed %></p>
-            <p><strong>Age:</strong> <%= pet.age %> years</p>
-            <p><strong>Description:</strong> <%= pet.description %></p>
-            <% if pet.pet_photo.attached? %>
-              <%= image_tag url_for(pet.pet_photo), alt: pet.pet_name, class: "pet-photo" %>
-            <% else %>
-              <p><em>No photo uploaded for this pet.</em></p>
-            <% end %>
+      <h2 class="user-text-heading">Your Pets</h2>
+        <% if @user.pets.any? %>
+          <% @user.pets.each do |pet| %>
+            <div class="d-flex align-items-center justify-content-left">
+                <% if pet.pet_photo.attached? %>
+                  <%= image_tag url_for(pet.pet_photo), alt: pet.pet_name, class: "pet-photo" %>
+                <% else %>
+                  <p><em>No photo uploaded for this pet.</em></p>
+                <% end %>
+              <h3 class="p-3"><strong><%= pet.pet_name %></strong></h3>
+            </div>
+            <div class="d-flex align-items-center justify-content-left">
+              <p><strong>Breed:</strong> <%= pet.breed %></p>
+              <p class="p-2"><strong>Age:</strong> <%= pet.age %> years</p>
+            </div>
+              <p><strong>Description:</strong> <%= pet.description %></p>
 
             <!-- Edit and Delete Buttons (only for owner) -->
-            <% if pet.user == current_user %>
-              <div class="pet-actions">
+      <div class="d-flex align-items-center justify-content-left">
+              <% if pet.user == current_user %>
                 <!-- Edit Button -->
                 <%= link_to "Edit", edit_pet_path(pet), class: "btn btn-warning mt-2" %>
-
                 <!-- Delete Button -->
                 <%= form_with(url: pet_path(pet), method: :delete, local: true) do %>
-                  <%= submit_tag "Delete", class: "btn btn-danger mt-2", data: { confirm: "Are you sure you want to delete this pet?" } %>
+                  <%= submit_tag "Delete", class: "btn btn-outline-secondary mt-2", data: { confirm: "Are you sure you want to delete this pet?" } %>
                 <% end %>
-              </div>
-            <% end %>
-          </li>
+              <% end %>
         <% end %>
-      </ul>
-    <% else %>
-      <p>You have no pets yet.</p>
+      <% else %>
+        <p>You have no pets yet.</p>
     <% end %>
 
-    <%= link_to "Add Pet", new_pet_path, class: "btn btn-primary mb-3" %>
-  </div>
+        <%= link_to "Register a pet", new_pet_path, class: "btn btn-danger text-white mt-2" %>
+      </div>
+    </div>
 
-    <!-- ======================== Upcoming Bookings ======================== -->
+    <!-- ======================== Upcoming Matches ======================== -->
     <div class="card-user-bookings">
-    <h2>Upcoming Bookings</h2>
+    <h2 class="user-text-heading">Upcoming Matches</h2>
     <% if @bookings.any? %>
       <table class="table table-striped">
         <thead>
@@ -131,13 +128,13 @@
           <% @bookings.each do |booking| %>
             <tr>
               <!-- Link the pet name to the pet show page -->
-              <td><%= link_to booking.pet.pet_name, pet_path(booking.pet) %></td>
+              <td><%= link_to booking.pet.pet_name, pet_path(booking.pet), class: "text-dark"%></td>
               <td><%= booking.start_date %></td>
               <td><%= booking.end_date %></td>
               <td><%= booking.status %></td>
               <!-- "Edit Booking" button -->
               <td>
-                <%= link_to "Edit Booking", edit_booking_path(booking), class: "btn btn-secondary btn-sm" %>
+                <%= link_to "Edit Match", edit_booking_path(booking), class: "btn btn-warning btn-sm" %>
               </td>
             </tr>
           <% end %>
@@ -148,8 +145,14 @@
     <% end %>
 
     <!-- Button for All Bookings -->
-    <%= link_to "All Bookings", bookings_path, class: "btn btn-primary btn-sm mt-3" %>
+    <%= link_to "All Matches", bookings_path, class: "btn btn-secondary text-white mt-3" %>
   </div>
+
+  </div>
+    <div class="actions">
+      <%= link_to "Back to Pets", pets_path, class: "btn btn-secondary text-white mt-4" %>
+    </div>
+</div>
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
