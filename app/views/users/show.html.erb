@@ -1,14 +1,11 @@
-<h1>Welcome, <%= @user.first_name %>!</h1>
-
-<div class="actions">
-  <%= link_to "Back to Pets", pets_path, class: "btn btn-secondary" %>
+<div class="d-flex align-items-center justify-content-center mt-5">
+  <h1>Welcome, <%= @user.first_name %>!</h1>
 </div>
 
-<div class="card-container">
-  <div class="cards">
-    <!-- ======================== Profile Details ======================== -->
+<div class="cards">
+  <!-- ======================== Profile Details ======================== -->
     <div class="card-profile-details">
-      <h2>Your Profile Details</h2>
+      <h2 class="user-text-heading">Your Profile Details</h2>
 
       <!-- Display Profile Details -->
       <div id="profile-display">
@@ -76,7 +73,7 @@
 
     <!-- ======================== User Pets Section ======================== -->
     <div class="card-user-pets">
-    <h2>Your Pets</h2>
+    <h2 class="user-text-heading">Your Pets</h2>
     <% if @user.pets.any? %>
       <ul>
         <% @user.pets.each do |pet| %>
@@ -115,7 +112,7 @@
 
     <!-- ======================== Upcoming Bookings ======================== -->
     <div class="card-user-bookings">
-    <h2>Upcoming Bookings</h2>
+    <h2 class="user-text-heading">Upcoming Matches</h2>
     <% if @bookings.any? %>
       <table class="table table-striped">
         <thead>
@@ -150,6 +147,10 @@
     <!-- Button for All Bookings -->
     <%= link_to "All Bookings", bookings_path, class: "btn btn-primary btn-sm mt-3" %>
   </div>
+
+<div class="actions">
+  <%= link_to "Back to Pets", pets_path, class: "btn btn-secondary" %>
+</div>
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
