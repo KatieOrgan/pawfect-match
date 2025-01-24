@@ -37,7 +37,7 @@
 <div class="card-container">
   <div class="cards">
     <% @pets.each do |pet| %>
-      <div class="card-pet" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+      <div class="card-pet">
         <% if pet.pet_photo.attached? %>
           <%= link_to pet_path(pet), class: "card-pet-image-link" do %>
             <%= image_tag url_for(pet.pet_photo), alt: "#{pet.pet_name} image", width: 200 %>
