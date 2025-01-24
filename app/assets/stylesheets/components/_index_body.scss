@@ -49,7 +49,13 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
 /* Apply the custom cursor to the whole body */
-  cursor: url("cursor.png"), auto;
+  cursor: url("cursor-paw-red.png"), auto;
+}
+
+
+/* Override pointer cursor on clickable elements */
+a, button, .clickable, .cursor-other {
+  cursor: url("cursor-paw-red.png"), auto !important;
 }
 
 .login-text {
@@ -64,7 +70,22 @@ body {
   border-radius: 50%;
 }
 
-.user-text-heading {
+.filter-border {
+  border: solid 1px rgba(249, 88, 85, 0.8);
+}
+
+.filter-btn {
+  background-color: rgba(249, 88, 85, 0.8);
+}
+
+.filter-btn:hover {
+  background-color: rgba(249, 88, 85, 1);
+}
+
+.input-border {
+  border: solid 1px rgba(249, 88, 85, 0.3);
+
+  .user-text-heading {
   font-family: 'Chewy';
   color: #C93E3E;
 }

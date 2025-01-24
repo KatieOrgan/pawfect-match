@@ -16,7 +16,7 @@
       <%= link_to "REGISTER A PET", new_pet_path, class: "btn btn-sm btn-secondary text-white rounded-pill" %>
       <%= button_to "Sign out", destroy_user_session_path, method: :delete, data: { confirm: "Are you sure?" } %>
       <%= link_to user_path(current_user), class: "profile-link" do %>
-        <%= image_tag 'profileicon.jpg', alt: 'Profile', class: 'profile-icon' %>
+        <%= image_tag 'Katie-Pawfect-Match.JPG', alt: 'Profile', class: 'profile-icon' %>
       <% end %>
     <% else %>
       <%= link_to "Sign in", new_user_session_path %>

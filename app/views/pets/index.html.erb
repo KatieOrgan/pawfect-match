@@ -5,30 +5,30 @@
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-sm-8 my-3">
-      <%= form_with url: pets_path, method: :get, class: "d-flex flex-column rounded border border-warning p-3" do %>
+      <%= form_with url: pets_path, method: :get, class: "d-flex flex-column rounded p-3 filter-border" do %>
         <!-- Keyword Search -->
-        <%= text_field_tag :query, params[:query], class: "form-control mb-3", placeholder: "Type a keyword" %>
+        <%= text_field_tag :query, params[:query], class: "form-control mb-3 input-border", placeholder: "Type a keyword" %>
 
         <!-- Filter by Breed -->
         <div class="form-group mb-3">
           <%= label_tag :breed, "Filter by Breed" %>
-          <%= select_tag :breed, options_for_select(["All Breeds"] + Pet.distinct.pluck(:breed), params[:breed]), class: "form-select" %>
+          <%= select_tag :breed, options_for_select(["All Breeds"] + Pet.distinct.pluck(:breed), params[:breed]), class: "form-select input-border" %>
         </div>
 
         <!-- Filter by Size -->
         <div class="form-group mb-3">
           <%= label_tag :size, "Filter by Size" %>
-          <%= select_tag :size, options_for_select(["All Sizes"] + Pet.distinct.pluck(:size), params[:size]), class: "form-select" %>
+          <%= select_tag :size, options_for_select(["All Sizes"] + Pet.distinct.pluck(:size), params[:size]), class: "form-select input-border" %>
         </div>
 
         <!-- Filter by Availability -->
         <div class="form-group mb-3">
           <%= label_tag :available, "Filter by Availability" %>
-          <%= select_tag :available, options_for_select([["All", nil], ["Available", true], ["Not Available", false]], params[:available]), class: "form-select" %>
+          <%= select_tag :available, options_for_select([["All", nil], ["Available", true], ["Not Available", false]], params[:available]), class: "form-select input-border" %>
         </div>
 
         <!-- Submit Button -->
-        <%= submit_tag "Filter", class: "btn btn-danger text-white mt-2" %>
+        <%= submit_tag "Filter", class: "btn text-white mt-2 filter-btn cursor-other" %>
       <% end %>
     </div>
   </div>
@@ -40,7 +40,7 @@
       <div class="card-pet">
         <% if pet.pet_photo.attached? %>
           <%= link_to pet_path(pet), class: "card-pet-image-link" do %>
-            <%= image_tag url_for(pet.pet_photo), alt: "#{pet.pet_name} image", width: 200 %>
+            <%= image_tag url_for(pet.pet_photo), alt: "#{pet.pet_name} image" %>
           <% end %>
         <% else %>
           <p><em>No photo uploaded</em></p>
@@ -49,12 +49,12 @@
         <h2><%= "#{pet.pet_name} (#{pet.breed})" %></h2>
         <p><strong>Age:</strong> <%= pet.age %> years</p>
         <p><strong>Size:</strong> <%= pet.size %></p>
-        <p><strong>Description:</strong> <%= pet.description.truncate(120) %></p>
+        <p><strong>Description:</strong> <%= pet.description.truncate(100) %></p>
 
         <% if pet.available? %>
           <p><strong>Status:</strong> Available for Booking</p>
           <!-- Booking link -->
-          <%= link_to "Match with #{pet.pet_name}", new_booking_path(pet_id: pet.id), class: "btn btn-primary mt-2" %>
+          <%= link_to "Match with #{pet.pet_name}", new_booking_path(pet_id: pet.id), class: "book-btn" %>
         <% else %>
           <p><strong>Status:</strong> Not Available</p>
         <% end %>
