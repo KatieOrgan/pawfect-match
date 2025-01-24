@@ -52,6 +52,14 @@ body {
   cursor: url("cursor-paw-red.png"), auto;
 }
 
+#myVideo {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  z-index: -1;
+}
 
 /* Override pointer cursor on clickable elements */
 a, button, .clickable, .cursor-other {
@@ -89,6 +97,12 @@ a, button, .clickable, .cursor-other {
   font-family: 'Chewy';
   color: #C93E3E;
 }
+}
+
+.tagline {
+  font-family: 'Chewy';
+  color: #5C4033;
+}
 
 .landing-text {
   font-size: 100px;
@@ -97,5 +111,4 @@ a, button, .clickable, .cursor-other {
 .landing-tagline {
   font-family: 'Chewy';
   color:#C93E3E;
-}
 }

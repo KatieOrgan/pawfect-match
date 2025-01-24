@@ -1,7 +1,14 @@
+<div>
+  <video autoplay muted loop id="myVideo">
+    <source src="<%= asset_path('background_video.mp4') %>" type="video/mp4">
+  </video>
+</div>
+
 <div class="landing-container">
   <div class="d-flex flex-column align-items-center justify-content-center">
-    <h1 class="landing-text"><strong>Welcome to Pawfect Match</strong></h1>
-    <h2 class="landing-tagline">Where pets and people meet</h2>
+    <h1 class="landing-text text-white"><strong>Welcome to Pawfect Match</strong></h1>
+    <h2 class="tagline mb-5">Where pets and people meet</h2>
+    <%= link_to "View all pets", pets_path, class:'btn btn-danger rounded-pill mb-3' %>
   </div>
 </div>
 <linkto
