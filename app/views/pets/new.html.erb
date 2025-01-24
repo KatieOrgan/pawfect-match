@@ -1,41 +1,62 @@
-<h1>Add a New Pet</h1>
-
-<%= form_with(model: @pet, local: true) do |form| %>
-  <div>
-    <%= form.label :pet_name, "Pet Name" %><br>
-    <%= form.text_field :pet_name %>
+<div class="card-pet-new d-flex flex-column align-items-center justify-content-center p-5" style="background-color: #967969;">
+  <div class="d-flex flex-column align-items-center justify-content-center">
+    <h1 class="text-white"><strong>Add a New Pet</strong></h1>
   </div>
 
-  <div>
-    <%= form.label :breed, "Breed" %><br>
-    <%= form.text_field :breed %>
+  <div class="container">
+    <div class="card-pet-details mt-4 mb-2 p-4">
+      <div class="row">
+        <div class="form-action d-flex align-items-center justify-content-between">
+          <div class="col-4">
+          <%= form_with(model: @pet, local: true) do |form| %>
+            <div>
+              <%= form.label :pet_name, "Pet Name" %><br>
+              <%= form.text_field :pet_name %>
+            </div>
+
+            <div>
+              <%= form.label :breed, "Breed" %><br>
+              <%= form.text_field :breed %>
+            </div>
+
+            <div>
+              <%= form.label :age, "Age" %><br>
+              <%= form.number_field :age %>
+            </div>
+          </div>
+
+          <div class="col-4 mr-auto">
+            <div>
+              <%= form.label :size, "Size" %><br>
+              <%= form.text_field :size %>
+            </div>
+
+            <div>
+              <%= form.label :description, "Description" %><br>
+              <%= form.text_area :description %>
+            </div>
+          </div>
+
+          <div class="col-4 mr-auto">
+            <div>
+              <%= form.label :available, "Available" %><br>
+              <%= form.check_box :available %>
+            </div>
+            <!-- Here’s the important bit for the photo upload: -->
+            <div>
+              <%= form.label :pet_photo, "Upload a photo" %><br>
+              <%= form.file_field :pet_photo %>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div>
-    <%= form.label :age, "Age" %><br>
-    <%= form.number_field :age %>
+  <div class="mt-4">
+          <%= form.submit "Create Pet" %>
+        <% end %>
   </div>
 
-  <div>
-    <%= form.label :size, "Size" %><br>
-    <%= form.text_field :size %>
-  </div>
-
-  <div>
-    <%= form.label :description, "Description" %><br>
-    <%= form.text_area :description %>
-  </div>
-
-  <div>
-    <%= form.label :available, "Available" %><br>
-    <%= form.check_box :available %>
-  </div>
-
-  <!-- Here’s the important bit for the photo upload: -->
-  <div>
-    <%= form.label :pet_photo, "Upload a photo" %><br>
-    <%= form.file_field :pet_photo %>
-  </div>
-
-  <%= form.submit "Create Pet" %>
-<% end %>
+</div>
