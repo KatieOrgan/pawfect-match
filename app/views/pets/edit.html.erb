@@ -1,0 +1,44 @@
+<div class="edit-pet-container">
+  <h1>Edit Pet Details</h1>
+
+  <%= form_with model: @pet, local: true do |f| %>
+    <div>
+      <%= f.label :pet_name, "Pet Name" %>
+      <%= f.text_field :pet_name, class: "form-control", value: @pet.pet_name %>
+    </div>
+
+    <div>
+      <%= f.label :breed, "Breed" %>
+      <%= f.text_field :breed, class: "form-control", value: @pet.breed %>
+    </div>
+
+    <div>
+      <%= f.label :age, "Age" %>
+      <%= f.number_field :age, class: "form-control", value: @pet.age %>
+    </div>
+
+    <div>
+      <%= f.label :size, "Size" %>
+      <%= f.select :size, ['Small', 'Medium', 'Large'], { selected: @pet.size }, class: "form-control" %>
+    </div>
+
+    <div>
+      <%= f.label :description, "Description" %>
+      <%= f.text_area :description, class: "form-control", value: @pet.description %>
+    </div>
+
+    <div>
+      <%= f.label :available, "Available for Booking?" %>
+      <%= f.check_box :available, {}, true, false %>
+    </div>
+
+    <div>
+      <%= f.label :pet_photo, "Pet Photo" %>
+      <%= f.file_field :pet_photo, class: "form-control" %>
+    </div>
+
+    <%= f.submit "Save Changes", class: "btn btn-primary mt-3" %>
+  <% end %>
+
+  <%= link_to "Cancel", pet_path(@pet), class: "btn btn-secondary mt-3" %>
+</div>

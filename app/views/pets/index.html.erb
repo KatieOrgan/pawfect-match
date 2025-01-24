@@ -19,30 +19,29 @@
 
 <div class="card-container">
   <div class="cards">
-
     <% @pets.each do |pet| %>
-      <%= link_to pet_path(pet), class: "card-pet-link" do %>
-        <div class="card-pet" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
-          <h2><%= "#{pet.pet_name} (#{pet.breed})" %></h2>
-
-          <% if pet.pet_photo.attached? %>
+      <div class="card-pet" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+        <% if pet.pet_photo.attached? %>
+          <%= link_to pet_path(pet), class: "card-pet-image-link" do %>
             <%= image_tag url_for(pet.pet_photo), alt: "#{pet.pet_name} image", width: 200 %>
-          <% else %>
-            <p><em>No photo uploaded</em></p>
           <% end %>
+        <% else %>
+          <p><em>No photo uploaded</em></p>
+        <% end %>
 
-          <p><strong>Age:</strong> <%= pet.age %> years</p>
-          <p><strong>Size:</strong> <%= pet.size %></p>
-          <p><strong>Description:</strong> <%= pet.description.truncate(120) %></p>
+        <h2><%= "#{pet.pet_name} (#{pet.breed})" %></h2>
+        <p><strong>Age:</strong> <%= pet.age %> years</p>
+        <p><strong>Size:</strong> <%= pet.size %></p>
+        <p><strong>Description:</strong> <%= pet.description.truncate(120) %></p>
 
-          <% if pet.available? %>
-            <p><strong>Status:</strong> Available for Booking</p>
-          <% else %>
-            <p><strong>Status:</strong> Not Available</p>
-          <% end %>
-        </div>
-      <% end %>
+        <% if pet.available? %>
+          <p><strong>Status:</strong> Available for Booking</p>
+          <!-- Booking link -->
+          <%= link_to "Book #{pet.pet_name}", new_booking_path(pet_id: pet.id), class: "btn btn-primary mt-2" %>
+        <% else %>
+          <p><strong>Status:</strong> Not Available</p>
+        <% end %>
+      </div>
     <% end %>
   </div>
-</div>
 </div>
