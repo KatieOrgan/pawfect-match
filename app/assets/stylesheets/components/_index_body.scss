@@ -36,6 +36,13 @@ html, body {
   min-height: 80vh;
 }
 
+h1 {
+  color: #473126;
+  font-weight: bold;
+  font-family: 'Chewy';
+  letter-spacing: 1px;
+  font-size: 60px;
+}
 
 body {
   background-image: url("1.png");
@@ -45,14 +52,8 @@ body {
   cursor: url("cursor.png"), auto;
 }
 
-
-
 .login-text {
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   letter-spacing: 2px;
   color: #4a2f16;
 }
-
-
-
-
