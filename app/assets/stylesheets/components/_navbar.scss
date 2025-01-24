@@ -43,12 +43,14 @@
   width: 100%;
   height: auto;
   display: block;
+  cursor: url("cursor-paw.png"), pointer;
 }
 
 a {
   text-decoration: none;
   color: white;
   margin: 0 5px;
+  cursor: url("cursor-paw.png"), pointer;
 }
 
 .profile-icon {
@@ -56,11 +58,12 @@ a {
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
-  cursor: pointer;
+  cursor: url("cursor-paw.png"), 32 32, pointer;
 }
 
 .profile-link {
   text-decoration: none;
+  cursor: url("cursor-paw.png"), pointer;
 }
 
 .navbar-left {
@@ -71,6 +74,7 @@ a {
 .register-pet-btn {
   margin: 10px 0px 0px 30px;
   padding: 0px;
+  cursor: url("cursor-paw.png"), pointer;
 }
 
 .navbar-right {
