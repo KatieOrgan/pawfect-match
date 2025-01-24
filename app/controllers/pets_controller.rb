@@ -42,8 +42,16 @@ class PetsController < ApplicationController
 
   def destroy
     @pet = Pet.find(params[:id])
-    @pet.destroy
-    redirect_to pets_url, notice: 'Pet was successfully removed.'
+
+    # Allow only the owner to delete the pet
+    if @pet.user == current_user
+      @pet.destroy
+      flash[:notice] = 'Pet was successfully removed.'
+    else
+      flash[:alert] = 'You are not authorized to delete this pet.'
+    end
+
+    redirect_to user_path(current_user)
   end
 
   private
