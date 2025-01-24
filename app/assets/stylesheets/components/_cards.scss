@@ -3,12 +3,12 @@
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 25px;
   // margin-bottom: 25px;
-  margin-right: 30px;
+  // margin-right: 30px;
 }
 
 .card-pet {
   overflow: hidden;
-  height: 470px;
+  height: 530px;
   background: white;
   box-shadow: 0 0 15px rgba(0,0,0,0.2);
   display: flex;
@@ -17,16 +17,15 @@
   width: 400px;
   border: solid 5px $pet-yellow;
   padding-top: 10px;
-  padding-bottom: 15px;
+  padding-bottom: 10px;
   border-radius: 5px;
   color: black;
-  margin: auto;
-  cursor: url("cursor-paw.png"), pointer;
+  // margin: auto;
 }
 
 .card-pet img {
-  height: 65%;
-  width: 300px;
+  height: 300px;
+  width: 350px;
   object-fit: cover;
   padding-top: 10px;
 }
@@ -35,17 +34,18 @@
   font-size: 16px;
   font-weight: bold;
   margin: 0;
+  padding-top: 10px;
 }
 
 .card-pet p {
   font-size: 12px;
   line-height: 1.4;
   opacity: .7;
-  // margin-bottom: 0;
+  margin-bottom: 10px;
   // margin-top: 8px;
-  margin: 5px;
-  padding-left: 5px;
-  padding-right: 5px;
+  // margin: 5px;
+  padding-left: 7px;
+  padding-right: 7px;
   align-items: center;
 }
 
