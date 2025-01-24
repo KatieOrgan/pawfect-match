@@ -7,6 +7,7 @@
     <div class="col-sm-8 my-3">
       <%= form_with url: pets_path, method: :get, class: "d-flex flex-column rounded p-3 filter-border" do %>
         <!-- Keyword Search -->
+        <%= label_tag :name, "Search by Name" %>
         <%= text_field_tag :query, params[:query], class: "form-control mb-3 input-border", placeholder: "Type a keyword" %>
 
         <!-- Filter by Breed -->

@@ -71,21 +71,25 @@ a, button, .clickable, .cursor-other {
 }
 
 .filter-border {
-  border: solid 1px rgba(249, 88, 85, 0.8);
+  // border: solid 1px rgba(249, 88, 85, 0.8);
+  background-color: #a68d80;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.37);
+  border: solid 5px #FE5B59;
 }
 
 .filter-btn {
-  background-color: rgba(249, 88, 85, 0.8);
+  background: rgb(233, 223, 146);
 }
 
 .filter-btn:hover {
-  background-color: rgba(249, 88, 85, 1);
+  background: rgba(233, 223, 146, 0.517);
 }
 
 .input-border {
-  border: solid 1px rgba(249, 88, 85, 0.3);
+  // border: solid 1px rgba(249, 88, 85, 0.3);
+}
 
-  .user-text-heading {
+.user-text-heading {
   font-family: 'Chewy';
   color: #C93E3E;
 }
