@@ -4,6 +4,12 @@
   border-radius: 10px;
 }
 
+.book-btn:hover {
+  background-color: $mocha;
+  transition: 0.5s;
+}
+
+
 // .cursor:hover {
 //   cursor: url("cursor-paw-red.png");
 // }
