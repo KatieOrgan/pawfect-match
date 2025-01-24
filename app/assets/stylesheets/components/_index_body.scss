@@ -1,3 +1,25 @@
+@media (max-width: 960px) {
+  /* For a screen < 960px, this CSS will be read */
+  .container {
+    width: 700px;
+  }
+}
+
+@media (max-width: 720px) {
+  /* For a screen < 720px, this CSS will be read */
+  .container {
+    width: 500px;
+  }
+}
+
+@media (max-width: 540px) {
+  /* For a screen < 540px, this CSS will be read */
+  .container {
+    width: 300px;
+  }
+}
+
+
 html, body {
   height: 100%;
   margin: 0;
@@ -14,21 +36,23 @@ html, body {
   min-height: 80vh;
 }
 
-// body {
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: flex-end; /* Push the navbar to the bottom */
-// }
 
 body {
   background-image: url("1.png");
   background-repeat: no-repeat;
   background-size: cover;
+/* Apply the custom cursor to the whole body */
+  cursor: url("cursor.png"), auto;
 }
+
+
 
 .login-text {
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   letter-spacing: 2px;
   color: #4a2f16;
 }
+
+
+
 
