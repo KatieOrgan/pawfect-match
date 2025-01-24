@@ -3,11 +3,20 @@
 </div>
 
 <div class="container-profile">
-  <div class="row">
+  <div class="row mb-5">
 
     <!-- ======================== Profile Details ======================== -->
-    <div class="col-md-6 column card-profile-details">
+    <div class="col-md-4 column card-profile-details">
       <h2 class="user-text-heading">Your Profile Details</h2>
+
+        <!-- Profile Picture Display -->
+        <% if @user.profile_picture.attached? %>
+          <%= image_tag url_for(@user.profile_picture),
+                        alt: "#{@user.first_name}'s Profile Picture",
+                        class: "profile-pic mb-3" %>
+        <% else %>
+          <p><strong>Profile Picture:</strong> No profile picture uploaded.</p>
+        <% end %>
 
       <!-- Display Profile Details -->
       <div id="profile-display">
@@ -17,16 +26,6 @@
         <p><strong>Last Name:</strong> <%= @user.last_name %></p>
         <% if @user.bio.present? %>
           <p><strong>Bio:</strong> <%= @user.bio %></p>
-        <% end %>
-
-        <!-- Profile Picture Display -->
-        <% if @user.profile_picture.attached? %>
-          <p><strong>Profile Picture:</strong></p>
-          <%= image_tag url_for(@user.profile_picture),
-                        alt: "#{@user.first_name}'s Profile Picture",
-                        class: "profile-pic" %>
-        <% else %>
-          <p><strong>Profile Picture:</strong> No profile picture uploaded.</p>
         <% end %>
 
         <button id="edit-button" class="btn btn-warning mt-2">Edit</button>
@@ -93,6 +92,7 @@
               </div>
                 <p><strong>Description:</strong> <%= pet.description %></p>
 
+
             <!-- Edit and Delete Buttons (only for owner) -->
       <div class="d-flex align-items-center justify-content-left">
               <% if pet.user == current_user %>
@@ -103,7 +103,8 @@
                   <%= submit_tag "Delete", class: "btn btn-outline-secondary mt-2", data: { confirm: "Are you sure you want to delete this pet?" } %>
                 <% end %>
               <% end %>
-          </div>
+            <br>
+        </div>
         <% end %>
             <%= link_to "Register a pet", new_pet_path, class: "btn btn-danger text-white mt-2" %>
       <% else %>
@@ -114,7 +115,7 @@
   </div>
 
     <!-- ======================== Upcoming Matches ======================== -->
-      <div class="card-user-bookings">
+      <div class="card-user-bookings mb-5">
         <h2 class="user-text-heading">Upcoming Matches</h2>
           <% if @bookings.any? %>
             <table class="table table-striped">
