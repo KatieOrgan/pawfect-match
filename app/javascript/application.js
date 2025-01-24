@@ -3,5 +3,6 @@ import "@hotwired/turbo-rails"
 import "controllers"
 import "@popperjs/core"
 import "bootstrap"
-import "@rails/ujs";
-Rails.start();
+import "@rails/ujs"
+
+window.Rails.start()
