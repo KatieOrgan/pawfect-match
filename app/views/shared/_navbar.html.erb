@@ -10,7 +10,6 @@
 
   </div>
   <div class="navbar-right">
-    <%= link_to "HOME", root_path %>
     <% if user_signed_in? %>
       <%= link_to "ALL PETS", pets_path %>
       <%= link_to "MY MATCHES", bookings_path %>

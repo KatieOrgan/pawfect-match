@@ -17,5 +17,5 @@ Rails.application.routes.draw do
       patch :update_profile_picture
     end
   end
-  root to: "pets#index"
+  root to: 'pages#landing'
 end
