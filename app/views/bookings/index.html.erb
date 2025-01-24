@@ -22,7 +22,7 @@
           <td><%= booking.end_date %></td>
           <td><%= booking.status %></td>
           <td>
-            <%= link_to 'Edit', edit_booking_path(booking), class: "btn btn-secondary btn-sm" %>
+            <%= link_to 'Edit', edit_booking_path(booking), class: "btn btn-secondary btn-sm text-white" %>
               <form action="<%= booking_path(booking) %>" method="POST" style="display: inline;">
               <input type="hidden" name="_method" value="delete">
               <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
