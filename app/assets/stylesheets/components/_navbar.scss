@@ -77,4 +77,14 @@ a {
   display: flex;
   align-items: center;
   gap: 15px; /* Add spacing between links */
+
+  a {
+    color: #c93e3e;
+    font-weight: bold;
+    font-size: 20px;
+  }
+
+  a:hover {
+    color: #967969;
+  }
 }

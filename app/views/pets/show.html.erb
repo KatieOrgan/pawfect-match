@@ -1,6 +1,6 @@
 <div class="show-container">
 <div class="show-card">
-<h1><%= @pet.pet_name %></h1>
+<h1><strong><%= @pet.pet_name %></strong></h1>
 
 <p><strong>Breed:</strong> <%= @pet.breed %></p>
 <p><strong>Age:</strong> <%= @pet.age %> years</p>
@@ -10,12 +10,12 @@
 <p><strong>Description:</strong> <%= @pet.description %></p>
 <p>
   <strong>Availability:</strong>
-  <%= @pet.available ? "Available for booking" : "Not available for booking" %>
+  <%= @pet.available ? "Available to match" : "Not available to match" %>
 </p>
 <div class="booking-section">
 
 <% if @pet.available %>
-  <%= link_to "Book #{ @pet.pet_name }", new_booking_path(pet_id: @pet.id), class: "book-btn" %>
+  <%= link_to "Match with #{ @pet.pet_name }", new_booking_path(pet_id: @pet.id), class: "book-btn" %>
 <% end %>
 </div>
 
@@ -24,5 +24,5 @@
 
 <div class="actions">
   <%= link_to "Back to All Pets", pets_path, class: "btn btn-secondary mt-3" %>
-  <%= link_to "All Bookings", bookings_path, class: "btn btn-primary mt-3" %>
+  <%= link_to "All Matches", bookings_path, class: "btn btn-primary mt-3" %>
 </div>

@@ -36,6 +36,13 @@ html, body {
   min-height: 80vh;
 }
 
+h1 {
+  color: #473126;
+  font-weight: bold;
+  font-family: 'Chewy';
+  letter-spacing: 1px;
+  font-size: 60px;
+}
 
 body {
   background-image: url("1.png");
@@ -51,14 +58,17 @@ a, button, .clickable, .cursor-other {
   cursor: url("cursor-paw-red.png"), auto !important;
 }
 
-
-
 .login-text {
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   letter-spacing: 2px;
   color: #4a2f16;
 }
 
+.pet-photo {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
 
 .filter-border {
   border: solid 1px rgba(249, 88, 85, 0.8);
@@ -74,4 +84,17 @@ a, button, .clickable, .cursor-other {
 
 .input-border {
   border: solid 1px rgba(249, 88, 85, 0.3);
+
+  .user-text-heading {
+  font-family: 'Chewy';
+  color: #C93E3E;
+}
+
+.landing-text {
+  font-size: 100px;
+}
+
+.landing-tagline {
+  font-family: 'Chewy';
+  color:#C93E3E;
 }

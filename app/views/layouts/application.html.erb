@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="icon" type="image/png" href="<%= asset_path('pawfect_match_logo-removebg-preview (1).png') %>">
+    <link rel="icon" type="image/png" href="<%= asset_path('pawfect_match_logo.png') %>">
     <title>PawfectMatch</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
@@ -16,11 +16,32 @@
    <div class="wrapper">
     <div class="content">
     <%= render 'shared/navbar' %>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+    <div id="flash-messages" class="flash-box">
+  <% if notice.present? %>
+    <div class="alert alert-success">
+      <%= notice %>
+    </div>
+  <% end %>
+  <% if alert.present? %>
+    <div class="alert alert-danger">
+      <%= alert %>
+    </div>
+  <% end %>
+</div>
     <%= yield %>
     </div>
   <%= render 'shared/footer' %>
    </div>
   </body>
 </html>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const flashMessages = document.getElementById("flash-messages");
+  if (flashMessages) {
+    setTimeout(() => {
+      flashMessages.style.display = "none";
+    }, 5000); // Adjust time (in milliseconds) as needed
+  }
+});
+</script>
