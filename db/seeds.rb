@@ -201,7 +201,7 @@ paws = Pet.create!(
   breed: 'Persian Cat',
   age: rand(1..8),
   size: 'Small',
-  description: "Meet Paws, a fluffy ball of charm with a purr that can melt anyone’s heart. She’s a gentle soul with soft, cloud-like fur that’s just begging to be stroked. Whiskers
+  description: "Meet Paws, a fluffy ball of charm with a purr that can melt anyone’s heart. She’s a gentle soul with soft, cloud-like fur that’s just begging to be stroked. She
   loves curling up in sunbeams, but don’t let that fool you—she’s also the queen of playful zoomies around the house. Her big, round eyes will steal your heart as she looks up at you,
   waiting for her next adventure or a cuddle session, whichever comes first!",
   available: [true, false].sample,

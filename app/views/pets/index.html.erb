@@ -33,7 +33,7 @@
 
           <p><strong>Age:</strong> <%= pet.age %> years</p>
           <p><strong>Size:</strong> <%= pet.size %></p>
-          <p><strong>Description:</strong> <%= pet.description.truncate(150) %></p>
+          <p><strong>Description:</strong> <%= pet.description.truncate(120) %></p>
 
           <% if pet.available? %>
             <p><strong>Status:</strong> Available for Booking</p>
