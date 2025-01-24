@@ -1,5 +1,5 @@
 <div class="d-flex align-items-center justify-content-center">
-  <h1><strong>Book <%= @pet.pet_name %></strong></h1>
+  <h1><strong>Match With <%= @pet.pet_name %></strong></h1>
 </div>
 
 <div class="d-flex flex-column align-items-center justify-content-center">
@@ -16,13 +16,13 @@
         <%= f.label :end_date, "End Date" %>
         <%= f.date_field :end_date, required: true %>
 
-        <%= f.submit "Confirm Booking", class: "btn btn-sm btn-danger text-white" %>
+        <%= f.submit "Confirm Match", class: "btn btn-sm btn-danger text-white" %>
       <% end %>
     </div>
   </div>
 
   <div class="back-link mt-2 mb-4">
-    <%= link_to "Back to Pets", pets_path, class: "btn btn-secondary" %>
+    <%= link_to "Back to All Pets", pets_path, class: "btn btn-secondary" %>
   </div>
 
 </div>

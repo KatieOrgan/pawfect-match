@@ -1,5 +1,5 @@
 <div class="d-flex align-items-center justify-content-center">
-  <h1>All Pets</h1>
+  <h1>View All Pets</h1>
 </div>
 
 <div class="container">
@@ -54,7 +54,7 @@
         <% if pet.available? %>
           <p><strong>Status:</strong> Available for Booking</p>
           <!-- Booking link -->
-          <%= link_to "Book #{pet.pet_name}", new_booking_path(pet_id: pet.id), class: "btn btn-primary mt-2" %>
+          <%= link_to "Match with #{pet.pet_name}", new_booking_path(pet_id: pet.id), class: "btn btn-primary mt-2" %>
         <% else %>
           <p><strong>Status:</strong> Not Available</p>
         <% end %>
