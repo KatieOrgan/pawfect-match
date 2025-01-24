@@ -1,44 +1,64 @@
-<div class="edit-pet-container">
-  <h1>Edit Pet Details</h1>
+<div class="card-booking-signup d-flex flex-column align-items-center justify-content-center p-5" style="background-color: #FA5655;">
+  <div class="d-flex flex-column align-items-center justify-content-center">
+    <h1 class="text-white"><strong>Edit Pet Details</strong></h1>
+  </div>
 
-  <%= form_with model: @pet, local: true do |f| %>
-    <div>
-      <%= f.label :pet_name, "Pet Name" %>
-      <%= f.text_field :pet_name, class: "form-control", value: @pet.pet_name %>
+<div class="container">
+  <div class="card-booking mt-4 mb-2 p-4">
+    <div class="row">
+      <div class="form-action d-flex align-items-center justify-content-between">
+        <div class="col-4 p-2">
+          <%= form_with model: @pet, local: true do |f| %>
+            <div>
+              <%= f.label :pet_name, "Pet Name" %>
+              <%= f.text_field :pet_name, class: "form-control", value: @pet.pet_name %>
+            </div>
+
+            <div>
+              <%= f.label :breed, "Breed" %>
+              <%= f.text_field :breed, class: "form-control", value: @pet.breed %>
+            </div>
+
+            <div>
+              <%= f.label :age, "Age" %>
+              <%= f.number_field :age, class: "form-control", value: @pet.age %>
+            </div>
+        </div>
+
+        <div class="col-4 p-2">
+          <div>
+            <%= f.label :size, "Size" %>
+            <%= f.select :size, ['Small', 'Medium', 'Large'], { selected: @pet.size }, class: "form-control" %>
+          </div>
+
+          <div>
+            <%= f.label :description, "Description" %>
+            <%= f.text_area :description, class: "form-control", value: @pet.description %>
+          </div>
+        </div>
+
+        <div class="col-4 p-2">
+          <div>
+            <%= f.label :available, "Available for Booking?" %>
+            <%= f.check_box :available, {}, true, false %>
+          </div>
+
+          <div>
+            <%= f.label :pet_photo, "Pet Photo" %>
+            <%= f.file_field :pet_photo, class: "form-control" %>
+          </div>
+        </div>
+
+      </div>
     </div>
+  </div>
+</div>
 
-    <div>
-      <%= f.label :breed, "Breed" %>
-      <%= f.text_field :breed, class: "form-control", value: @pet.breed %>
-    </div>
+<div>
+      <%= f.submit "Save Changes", class: "btn btn-light mt-3" %>
+      <% end %>
 
-    <div>
-      <%= f.label :age, "Age" %>
-      <%= f.number_field :age, class: "form-control", value: @pet.age %>
-    </div>
+      <%= link_to "Cancel", pet_path(@pet), class: "btn btn-secondary mt-3" %>
+</div>
 
-    <div>
-      <%= f.label :size, "Size" %>
-      <%= f.select :size, ['Small', 'Medium', 'Large'], { selected: @pet.size }, class: "form-control" %>
-    </div>
-
-    <div>
-      <%= f.label :description, "Description" %>
-      <%= f.text_area :description, class: "form-control", value: @pet.description %>
-    </div>
-
-    <div>
-      <%= f.label :available, "Available for Booking?" %>
-      <%= f.check_box :available, {}, true, false %>
-    </div>
-
-    <div>
-      <%= f.label :pet_photo, "Pet Photo" %>
-      <%= f.file_field :pet_photo, class: "form-control" %>
-    </div>
-
-    <%= f.submit "Save Changes", class: "btn btn-primary mt-3" %>
-  <% end %>
-
-  <%= link_to "Cancel", pet_path(@pet), class: "btn btn-secondary mt-3" %>
 </div>

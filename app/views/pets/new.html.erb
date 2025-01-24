@@ -25,7 +25,7 @@
             </div>
           </div>
 
-          <div class="col-4">
+          <div class="col-4 mr-auto">
             <div>
               <%= form.label :size, "Size" %><br>
               <%= form.text_field :size %>
@@ -37,12 +37,11 @@
             </div>
           </div>
 
-          <div class="col-4">
+          <div class="col-4 mr-auto">
             <div>
               <%= form.label :available, "Available" %><br>
               <%= form.check_box :available %>
             </div>
-
             <!-- Here’s the important bit for the photo upload: -->
             <div>
               <%= form.label :pet_photo, "Upload a photo" %><br>
