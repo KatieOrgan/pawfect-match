@@ -84,3 +84,6 @@ gem 'ostruct'
 gem 'cloudinary', '~> 1.25.0'
 gem 'activestorage-cloudinary-service'
 gem 'carrierwave', '~> 2.2.3'
+group :development, :test do
+  gem 'dotenv-rails'
+end

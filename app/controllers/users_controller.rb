@@ -1,69 +1,52 @@
 class UsersController < ApplicationController
-  def show
-    @user = User.find_by(id: params[:id])
+  before_action :set_user, only: [:show, :update_user_details, :update_profile_picture]
 
+  def show
     if @user.nil?
-      if user_signed_in?
-        redirect_to root_path, alert: "User not found."
-      else
-        redirect_to new_user_session_path, alert: "User not found."
-      end
+      redirect_to root_path, alert: "User not found."
     else
       @bookings = @user.bookings.order(start_date: :desc) || []
     end
   end
 
-  def new
-    @user = User.new
-  end
-
-  def create
-    @user = User.new(user_params)
-    if @user.save
-      redirect_to @user, notice: 'User was successfully created.'
-    else
-      render :new, status: :unprocessable_entity
-    end
-  end
-
-  def edit
+  def update_user_details
     @user = User.find(params[:id])
-  end
-
-  def update
-    @user = User.find(params[:id])
-    @bookings = @user.bookings.order(start_date: :desc) || []
-
-    if @user.update(user_params)
-      # If update succeeds, redirect to the user's profile with a success message
-      redirect_to @user, notice: 'User details updated successfully.'
+    @bookings = @user.bookings.order(start_date: :desc)
+  
+    if @user.update_without_password(user_details_params)
+      redirect_to @user, notice: "Details updated successfully."
     else
-      # If update fails, render the `show` template with an error message
-      flash.now[:alert] = "Failed to update user details."
+      flash.now[:alert] = "Update failed: #{@user.errors.full_messages.to_sentence}"
       render :show, status: :unprocessable_entity
     end
-  end
+  end 
 
-  def destroy
-    @user = User.find(params[:id])
-    @user.destroy
-    redirect_to users_url, notice: 'User was successfully deleted.'
+  def update_profile_picture
+    if params[:profile_picture].present?
+      @user.profile_picture.attach(params[:profile_picture])
+      if @user.save(validate: false)
+        redirect_to @user, notice: "Profile picture updated successfully."
+      else
+        redirect_to @user, alert: "Failed to save profile picture."
+      end
+    else
+      redirect_to @user, alert: "Please select an image to upload."
+    end
   end
 
   private
 
-  def user_params
-    # Remove `:profile_pic_url` if you're no longer using that column.
-    # Instead, permit `:profile_picture` for Active Storage.
-    params.require(:user).permit(
-      :username,
-      :first_name,
-      :last_name,
-      :email,
-      :password,
-      :bio,
-      :is_owner,
-      :profile_picture
-    )
+  def set_user
+    @user = User.find_by(id: params[:id])
   end
+
+  def user_details_params
+    params.require(:user).permit(:username, :first_name, :last_name, :email, :bio, :is_owner)
+  end
+  
+  # This removes password from validations if not provided
+  def skip_password_validation
+    { password: nil, password_confirmation: nil }
+  end
+  
 end
