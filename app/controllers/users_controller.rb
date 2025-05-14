@@ -34,6 +34,16 @@ class UsersController < ApplicationController
     end
   end
 
+  def delete_profile_picture
+    @user = User.find(params[:id])
+    if @user.profile_picture.attached?
+      @user.profile_picture.purge
+      redirect_to @user, notice: "Profile picture removed."
+    else
+      redirect_to @user, alert: "No profile picture to remove."
+    end
+  end
+
   private
 
   def set_user

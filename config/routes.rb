@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     member do
       patch :update_user_details
       patch :update_profile_picture
+      delete :delete_profile_picture
     end
   end
 end

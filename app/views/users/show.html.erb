@@ -6,27 +6,42 @@
   <div class="row mb-5">
 
   <!-- ======================== Profile Picture Display ======================== -->
-  <% if @user.profile_picture.attached? %>
-    <%= image_tag url_for(@user.profile_picture),
-                  alt: "#{@user.first_name}'s Profile Picture",
-                  class: "profile-pic mb-3" %>
-  <% else %>
-    <%= image_tag 'https://res.cloudinary.com/dnlawdzzq/image/upload/v1747214946/Default_pfp_xbjxka.jpg',
-                  alt: "Default Profile Picture",
-                  class: "profile-pic mb-3" %>
-  <% end %>
-  
-  <!-- ======================== Profile Picture Upload ======================== -->
-  <div class="mt-3">
-    <h5>Update Profile Picture</h5>
-    <%= form_with url: update_profile_picture_user_path(@user), method: :patch, local: true, html: { multipart: true } do %>
-      <div class="form-group">
-        <%= file_field_tag :profile_picture, accept: "image/*", class: "form-control" %>
-      </div>
-      <%= submit_tag "Upload Picture", class: "btn btn-secondary mt-2" %>
+  <div id="profile-picture-section" class="mt-3">
+    <% if @user.profile_picture.attached? %>
+      <%= image_tag url_for(@user.profile_picture),
+                    alt: "#{@user.first_name}'s Profile Picture",
+                    class: "profile-pic mb-3" %>
+    <% else %>
+      <%= image_tag 'https://res.cloudinary.com/dnlawdzzq/image/upload/v1747214946/Default_pfp_xbjxka.jpg',
+                    alt: "Default Profile Picture",
+                    class: "profile-pic mb-3" %>
     <% end %>
-  </div>
   
+    <!-- Edit Button -->
+    <button type="button" class="btn btn-link btn-sm" id="edit-picture-button">Edit Profile Picture</button>
+  
+    <!-- Hidden Upload + Delete Form Section -->
+    <div id="profile-picture-form-wrapper" class="d-none mt-3">
+      <%= form_with url: update_profile_picture_user_path(@user), method: :patch, local: true, html: { multipart: true } do %>
+        <div class="form-group">
+          <%= file_field_tag :profile_picture, accept: "image/*", class: "form-control" %>
+        </div>
+        <%= submit_tag "Upload Picture", class: "btn btn-secondary mt-2" %>
+      <% end %>
+  
+      <% if @user.profile_picture.attached? %>
+        <%= button_to "Delete Profile Picture",
+                      delete_profile_picture_user_path(@user),
+                      method: :delete,
+                      data: { confirm: "Are you sure you want to remove your profile picture?" },
+                      class: "btn btn-outline-danger mt-2" %>
+      <% end %>
+  
+      <!-- Cancel Button -->
+      <button type="button" class="btn btn-sm btn-outline-secondary mt-2" id="cancel-picture-edit">Cancel</button>
+    </div>
+  </div>
+ 
   <!-- ======================== Profile Info Display ======================== -->
   <div id="profile-display" class="mt-4">
   <%= form_with model: @user, url: update_user_details_user_path(@user), method: :patch, local: true do |f| %>
@@ -182,25 +197,42 @@
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  // Handle Edit buttons
-  document.querySelectorAll(".toggle-edit").forEach(button => {
-    button.addEventListener("click", () => {
-      const field = button.dataset.target;
-      document.getElementById(`${field}-display`).style.display = "none";
-      document.getElementById(`${field}-edit`).classList.remove("d-none");
-      button.style.display = "none";
+  document.addEventListener("DOMContentLoaded", () => {
+    // ===== Inline Edit / Cancel Toggle for Profile Fields =====
+    document.querySelectorAll(".toggle-edit").forEach(button => {
+      button.addEventListener("click", () => {
+        const field = button.dataset.target;
+        document.getElementById(`${field}-display`).style.display = "none";
+        document.getElementById(`${field}-edit`).classList.remove("d-none");
+        button.style.display = "none";
+      });
     });
-  });
 
-  // Handle Cancel buttons
-  document.querySelectorAll(".cancel-edit").forEach(button => {
-    button.addEventListener("click", () => {
-      const field = button.dataset.target;
-      document.getElementById(`${field}-edit`).classList.add("d-none");
-      document.getElementById(`${field}-display`).style.display = "inline";
-      document.querySelector(`.toggle-edit[data-target="${field}"]`).style.display = "inline";
+    document.querySelectorAll(".cancel-edit").forEach(button => {
+      button.addEventListener("click", () => {
+        const field = button.dataset.target;
+        document.getElementById(`${field}-edit`).classList.add("d-none");
+        document.getElementById(`${field}-display`).style.display = "inline";
+        document.querySelector(`.toggle-edit[data-target="${field}"]`).style.display = "inline";
+      });
     });
+
+    // ===== Profile Picture Edit Toggle =====
+    const editPictureButton = document.getElementById("edit-picture-button");
+    const pictureFormWrapper = document.getElementById("profile-picture-form-wrapper");
+    const cancelEditButton = document.getElementById("cancel-picture-edit");
+
+    if (editPictureButton && pictureFormWrapper && cancelEditButton) {
+      editPictureButton.addEventListener("click", () => {
+        editPictureButton.style.display = "none";
+        pictureFormWrapper.classList.remove("d-none");
+      });
+
+      cancelEditButton.addEventListener("click", () => {
+        pictureFormWrapper.classList.add("d-none");
+        editPictureButton.style.display = "inline-block";
+      });
+    }
   });
-});
 </script>
+
