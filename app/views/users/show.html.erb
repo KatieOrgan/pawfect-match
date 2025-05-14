@@ -11,12 +11,15 @@
 
         <!-- Profile Picture Display -->
         <% if @user.profile_picture.attached? %>
-          <%= image_tag url_for(@user.profile_picture),
-                        alt: "#{@user.first_name}'s Profile Picture",
-                        class: "profile-pic mb-3" %>
-        <% else %>
-          <p><strong>Profile Picture:</strong> No profile picture uploaded.</p>
-        <% end %>
+        <%= image_tag url_for(@user.profile_picture),
+                      alt: "#{@user.first_name}'s Profile Picture",
+                      class: "profile-pic mb-3" %>
+      <% else %>
+        <%= image_tag 'https://res.cloudinary.com/dnlawdzzq/image/upload/v1747214946/Default_pfp_xbjxka.jpg',
+                      alt: "Default Profile Picture",
+                      class: "profile-pic mb-3" %>
+      <% end %>
+      
 
       <!-- Display Profile Details -->
       <div id="profile-display">
@@ -33,7 +36,7 @@
 
       <!-- ======================== Form to Edit Profile Details ======================== -->
       <div id="profile-edit-form" style="display: none;">
-        <%= form_with(model: @user, url: user_path(@user), method: :patch, local: true) do |f| %>
+        <%= form_with(model: @user, url: user_path(@user), method: :patch, local: true, html: { multipart: true }) do |f| %>
           <div>
             <%= f.label :username, "Username" %>
             <%= f.text_field :username, placeholder: "Enter new username", class: "form-control" %>

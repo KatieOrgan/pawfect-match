@@ -15,9 +15,14 @@
       <%= link_to "MY MATCHES", bookings_path %>
       <%= link_to "REGISTER A PET", new_pet_path, class: "btn btn-sm btn-secondary text-white rounded-pill" %>
       <%= button_to "Sign out", destroy_user_session_path, method: :delete, data: { confirm: "Are you sure?" } %>
-      <%= link_to user_path(current_user), class: "profile-link" do %>
-        <%= image_tag 'Katie-Pawfect-Match.JPG', alt: 'Profile', class: 'profile-icon' %>
-      <% end %>
+<%= link_to user_path(current_user), class: "profile-link" do %>
+  <% if current_user.profile_picture.attached? %>
+    <%= image_tag url_for(current_user.profile_picture), alt: 'Profile', class: 'profile-icon' %>
+  <% else %>
+    <%= image_tag 'https://res.cloudinary.com/dnlawdzzq/image/upload/v1747214946/Default_pfp_xbjxka.jpg', alt: 'Default Profile', class: 'profile-icon' %>
+  <% end %>
+<% end %>
+
     <% else %>
       <%= link_to "Sign in", new_user_session_path %>
     <% end %>
