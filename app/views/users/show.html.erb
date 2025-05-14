@@ -5,76 +5,113 @@
 <div class="container-profile">
   <div class="row mb-5">
 
-    <!-- ======================== Profile Details ======================== -->
-    <div class="col-md-4 column card-profile-details">
-      <h2 class="user-text-heading">Your Profile Details</h2>
-
-        <!-- Profile Picture Display -->
-        <% if @user.profile_picture.attached? %>
-        <%= image_tag url_for(@user.profile_picture),
-                      alt: "#{@user.first_name}'s Profile Picture",
-                      class: "profile-pic mb-3" %>
-      <% else %>
-        <%= image_tag 'https://res.cloudinary.com/dnlawdzzq/image/upload/v1747214946/Default_pfp_xbjxka.jpg',
-                      alt: "Default Profile Picture",
-                      class: "profile-pic mb-3" %>
+  <!-- ======================== Profile Picture Display ======================== -->
+  <div id="profile-picture-section" class="mt-3">
+    <% if @user.profile_picture.attached? %>
+      <%= image_tag url_for(@user.profile_picture),
+                    alt: "#{@user.first_name}'s Profile Picture",
+                    class: "profile-pic mb-3" %>
+    <% else %>
+      <%= image_tag 'https://res.cloudinary.com/dnlawdzzq/image/upload/v1747214946/Default_pfp_xbjxka.jpg',
+                    alt: "Default Profile Picture",
+                    class: "profile-pic mb-3" %>
+    <% end %>
+  
+    <!-- Edit Button -->
+    <button type="button" class="btn btn-link btn-sm" id="edit-picture-button">Edit Profile Picture</button>
+  
+    <!-- Hidden Upload + Delete Form Section -->
+    <div id="profile-picture-form-wrapper" class="d-none mt-3">
+      <%= form_with url: update_profile_picture_user_path(@user), method: :patch, local: true, html: { multipart: true } do %>
+        <div class="form-group">
+          <%= file_field_tag :profile_picture, accept: "image/*", class: "form-control" %>
+        </div>
+        <%= submit_tag "Upload Picture", class: "btn btn-secondary mt-2" %>
       <% end %>
-      
-
-      <!-- Display Profile Details -->
-      <div id="profile-display">
-        <p><strong>Username:</strong> <%= @user.username %></p>
-        <p><strong>Email:</strong> <%= @user.email %></p>
-        <p><strong>First Name:</strong> <%= @user.first_name %></p>
-        <p><strong>Last Name:</strong> <%= @user.last_name %></p>
-        <% if @user.bio.present? %>
-          <p><strong>Bio:</strong> <%= @user.bio %></p>
-        <% end %>
-
-        <button id="edit-button" class="btn btn-warning mt-2">Edit</button>
-      </div>
-
-      <!-- ======================== Form to Edit Profile Details ======================== -->
-      <div id="profile-edit-form" style="display: none;">
-        <%= form_with(model: @user, url: user_path(@user), method: :patch, local: true, html: { multipart: true }) do |f| %>
-          <div>
-            <%= f.label :username, "Username" %>
-            <%= f.text_field :username, placeholder: "Enter new username", class: "form-control" %>
-          </div>
-
-          <div>
-            <%= f.label :email, "Email" %>
-            <%= f.text_field :email, placeholder: "Enter new email", class: "form-control" %>
-          </div>
-
-          <div>
-            <%= f.label :first_name, "First Name" %>
-            <%= f.text_field :first_name, placeholder: "Enter new first name", class: "form-control" %>
-          </div>
-
-          <div>
-            <%= f.label :last_name, "Last Name" %>
-            <%= f.text_field :last_name, placeholder: "Enter new last name", class: "form-control" %>
-          </div>
-
-          <div>
-            <%= f.label :bio, "Bio" %>
-            <%= f.text_area :bio, placeholder: "Enter new bio", class: "form-control" %>
-          </div>
-
-          <!-- File field for uploading a new profile picture -->
-          <div>
-            <%= f.label :profile_picture, "Profile Picture" %>
-            <%= f.file_field :profile_picture, accept: "image/*", class: "form-control" %>
-          </div>
-
-          <%= f.submit "Save Changes", class: "btn btn-primary mt-3" %>
-        <% end %>
-
-        <button id="cancel-button" class="btn btn-secondary mt-2">Cancel</button>
-      </div>
+  
+      <% if @user.profile_picture.attached? %>
+        <%= button_to "Delete Profile Picture",
+                      delete_profile_picture_user_path(@user),
+                      method: :delete,
+                      data: { confirm: "Are you sure you want to remove your profile picture?" },
+                      class: "btn btn-outline-danger mt-2" %>
+      <% end %>
+  
+      <!-- Cancel Button -->
+      <button type="button" class="btn btn-sm btn-outline-secondary mt-2" id="cancel-picture-edit">Cancel</button>
     </div>
-
+  </div>
+ 
+  <!-- ======================== Profile Info Display ======================== -->
+  <div id="profile-display" class="mt-4">
+  <%= form_with model: @user, url: update_user_details_user_path(@user), method: :patch, local: true do |f| %>
+    <div class="field-block">
+      <label><strong>Username:</strong></label>
+      <span class="inline-text" id="username-display"><%= @user.username %></span>
+      <span class="inline-edit d-none" id="username-edit">
+        <%= f.text_field :username, value: @user.username, class: "form-control form-control-sm" %>
+        <div class="mt-1">
+          <button type="button" class="btn btn-sm btn-secondary cancel-edit" data-target="username">Cancel</button>
+        </div>
+      </span>
+      <button type="button" class="btn btn-link btn-sm toggle-edit" data-target="username">Edit</button>
+    </div>
+  
+    <div class="field-block">
+      <label><strong>Email:</strong></label>
+      <span class="inline-text" id="email-display"><%= @user.email %></span>
+      <span class="inline-edit d-none" id="email-edit">
+        <%= f.text_field :email, value: @user.email, class: "form-control form-control-sm" %>
+        <div class="mt-1">
+          <button type="button" class="btn btn-sm btn-secondary cancel-edit" data-target="email">Cancel</button>
+        </div>
+      </span>
+      <button type="button" class="btn btn-link btn-sm toggle-edit" data-target="email">Edit</button>
+    </div>
+  
+    <div class="field-block">
+      <label><strong>First Name:</strong></label>
+      <span class="inline-text" id="first_name-display"><%= @user.first_name %></span>
+      <span class="inline-edit d-none" id="first_name-edit">
+        <%= f.text_field :first_name, value: @user.first_name, class: "form-control form-control-sm" %>
+        <div class="mt-1">
+          <button type="button" class="btn btn-sm btn-secondary cancel-edit" data-target="first_name">Cancel</button>
+        </div>
+      </span>
+      <button type="button" class="btn btn-link btn-sm toggle-edit" data-target="first_name">Edit</button>
+    </div>
+  
+    <div class="field-block">
+      <label><strong>Last Name:</strong></label>
+      <span class="inline-text" id="last_name-display"><%= @user.last_name %></span>
+      <span class="inline-edit d-none" id="last_name-edit">
+        <%= f.text_field :last_name, value: @user.last_name, class: "form-control form-control-sm" %>
+        <div class="mt-1">
+          <button type="button" class="btn btn-sm btn-secondary cancel-edit" data-target="last_name">Cancel</button>
+        </div>
+      </span>
+      <button type="button" class="btn btn-link btn-sm toggle-edit" data-target="last_name">Edit</button>
+    </div>
+  
+    <div class="field-block">
+      <label><strong>Bio:</strong></label>
+      <span class="inline-text" id="bio-display"><%= @user.bio.presence || "No bio yet." %></span>
+      <span class="inline-edit d-none" id="bio-edit">
+        <%= f.text_field :bio, value: @user.bio, class: "form-control form-control-sm" %>
+        <div class="mt-1">
+          <button type="button" class="btn btn-sm btn-secondary cancel-edit" data-target="bio">Cancel</button>
+        </div>
+      </span>
+      <button type="button" class="btn btn-link btn-sm toggle-edit" data-target="bio">Edit</button>
+    </div>
+  
+    <%= f.submit "Save Changes", class: "btn btn-primary mt-3" %>
+  <% end %>
+  
+  <%= link_to "Change Password", edit_user_registration_path, class: "btn btn-outline-secondary mt-2" %>
+  
+  </div>
+  
     <!-- ======================== User Pets Section ======================== -->
     <div class="col-md-6 column card-user-pets">
       <div class="pet-card">
@@ -159,24 +196,43 @@
   </div>
 </div>
 
-
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const editButton = document.getElementById("edit-button");
-  const cancelButton = document.getElementById("cancel-button");
-  const profileDisplay = document.getElementById("profile-display");
-  const profileEditForm = document.getElementById("profile-edit-form");
+  document.addEventListener("DOMContentLoaded", () => {
+    // ===== Inline Edit / Cancel Toggle for Profile Fields =====
+    document.querySelectorAll(".toggle-edit").forEach(button => {
+      button.addEventListener("click", () => {
+        const field = button.dataset.target;
+        document.getElementById(`${field}-display`).style.display = "none";
+        document.getElementById(`${field}-edit`).classList.remove("d-none");
+        button.style.display = "none";
+      });
+    });
 
-  // Show the edit form when "Edit" is clicked
-  editButton.addEventListener("click", () => {
-    profileDisplay.style.display = "none";
-    profileEditForm.style.display = "block";
-  });
+    document.querySelectorAll(".cancel-edit").forEach(button => {
+      button.addEventListener("click", () => {
+        const field = button.dataset.target;
+        document.getElementById(`${field}-edit`).classList.add("d-none");
+        document.getElementById(`${field}-display`).style.display = "inline";
+        document.querySelector(`.toggle-edit[data-target="${field}"]`).style.display = "inline";
+      });
+    });
 
-  // Hide the edit form and show the display when "Cancel" is clicked
-  cancelButton.addEventListener("click", () => {
-    profileEditForm.style.display = "none";
-    profileDisplay.style.display = "block";
+    // ===== Profile Picture Edit Toggle =====
+    const editPictureButton = document.getElementById("edit-picture-button");
+    const pictureFormWrapper = document.getElementById("profile-picture-form-wrapper");
+    const cancelEditButton = document.getElementById("cancel-picture-edit");
+
+    if (editPictureButton && pictureFormWrapper && cancelEditButton) {
+      editPictureButton.addEventListener("click", () => {
+        editPictureButton.style.display = "none";
+        pictureFormWrapper.classList.remove("d-none");
+      });
+
+      cancelEditButton.addEventListener("click", () => {
+        pictureFormWrapper.classList.add("d-none");
+        editPictureButton.style.display = "inline-block";
+      });
+    }
   });
-});
 </script>
+

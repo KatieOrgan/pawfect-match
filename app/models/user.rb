@@ -11,7 +11,7 @@ class User < ApplicationRecord
   validates :bio, presence: false
   validates :is_owner, inclusion: { in: [true, false], message: "must be true or false" }
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
-  validates :password, presence: true
+  validates :password, presence: true, if: :password_required?
 
   before_validation :set_defaults
 
@@ -20,4 +20,9 @@ class User < ApplicationRecord
   def set_defaults
     self.is_owner = false if is_owner.nil?
   end
+
+  def password_required?
+    new_record? || password.present? || password_confirmation.present?
+  end
+
 end
