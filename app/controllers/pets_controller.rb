@@ -3,24 +3,42 @@ class PetsController < ApplicationController
 
   def index
     @pets = Pet.all
-
+  
     if params[:query].present?
       @pets = @pets.search_by_breed_and_size_and_description_and_pet_name_and_available(params[:query])
     end
-
+  
     if params[:breed].present? && params[:breed] != "All Breeds"
       @pets = @pets.where(breed: params[:breed])
     end
-
+  
     if params[:size].present? && params[:size] != "All Sizes"
       @pets = @pets.where(size: params[:size])
     end
-
+  
+    if params[:location].present?
+      @pets = @pets.near(params[:location], 50) # 50 miles radius
+    end
+    
+    if params[:location].present?
+      distance = params[:distance].presence || 50
+      @pets = Pet.near(params[:location], distance)
+    end
+    
+    if params[:available_from].present?
+      @pets = @pets.where("available_from >= ?", params[:available_from])
+    end
+  
+    if params[:available_until].present?
+      @pets = @pets.where("available_until <= ?", params[:available_until])
+    end
+  
     if params[:available].present?
-      @pets = @pets.where(available: ActiveModel::Type::Boolean.new.cast(params[:available]))
+      available = ActiveModel::Type::Boolean.new.cast(params[:available])
+      @pets = @pets.where(booked: !available)
     end
   end
-
+  
   def show
     @pet = Pet.find(params[:id])
   end
@@ -80,7 +98,11 @@ class PetsController < ApplicationController
                                 :age,
                                 :size,
                                 :description,
-                                :available,
+                                :location,
+                                :available_from,
+                                :available_until,
+                                :highlights,
+                                :booked,
                                 :pet_photo)
   end
-end
+  end

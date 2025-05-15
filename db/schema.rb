@@ -68,7 +68,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_14_213703) do
     t.date "available_from"
     t.date "available_until"
     t.text "highlights"
-    t.boolean "booked"
+    t.boolean "booked", default: false
     t.float "latitude"
     t.float "longitude"
     t.index ["user_id"], name: "index_pets_on_user_id"
