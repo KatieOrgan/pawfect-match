@@ -8,35 +8,49 @@ class PetsController < ApplicationController
       @pets = @pets.search_by_breed_and_size_and_description_and_pet_name_and_available(params[:query])
     end
   
-    if params[:breed].present? && params[:breed] != "All Breeds"
+    if params[:breed].present? && params[:breed] != "Any Type"
       @pets = @pets.where(breed: params[:breed])
     end
   
-    if params[:size].present? && params[:size] != "All Sizes"
+    if params[:size].present? && params[:size] != "Any Size"
       @pets = @pets.where(size: params[:size])
-    end
-  
-    if params[:location].present?
-      @pets = @pets.near(params[:location], 50) # 50 miles radius
     end
     
     if params[:location].present?
       distance = params[:distance].presence || 50
       @pets = Pet.near(params[:location], distance)
     end
+
+    if params[:location].present?
+      coords = Geocoder.search(params[:location]).first&.coordinates
+      @user_location = coords if coords
+    end
     
-    if params[:available_from].present?
-      @pets = @pets.where("available_from >= ?", params[:available_from])
+    @user_location ||= [53.8008, -1.5491] # fallback
+        
+    if params[:available_from].present? && params[:available_until].present?
+      from = Date.parse(params[:available_from])
+      to   = Date.parse(params[:available_until])
+      @pets = @pets.select do |pet|
+        pet.available_from && (
+          (
+            pet.available_until && from <= pet.available_until && to >= pet.available_from
+          ) ||
+          (
+            pet.available_until.nil? && to >= pet.available_from
+          )
+        )
+      end
+    elsif params[:available_from].present?
+      from = Date.parse(params[:available_from])
+      @pets = @pets.select { |pet| pet.available_from && from <= (pet.available_until || Date.today + 10.years) }
+    
+    elsif params[:available_until].present?
+      to = Date.parse(params[:available_until])
+      @pets = @pets.select { |pet| pet.available_from && pet.available_from <= to }
     end
-  
-    if params[:available_until].present?
-      @pets = @pets.where("available_until <= ?", params[:available_until])
-    end
-  
-    if params[:available].present?
-      available = ActiveModel::Type::Boolean.new.cast(params[:available])
-      @pets = @pets.where(booked: !available)
-    end
+
+    @pets = @pets.select(&:available_now?)
   end
   
   def show
@@ -102,7 +116,7 @@ class PetsController < ApplicationController
                                 :available_from,
                                 :available_until,
                                 :highlights,
-                                :booked,
-                                :pet_photo)
+                                :pet_photo,
+                                :pet_photos)
   end
   end

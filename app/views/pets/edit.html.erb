@@ -38,14 +38,10 @@
         </div>
 
         <div class="col-4 p-2">
-          <div>
-            <%= f.label :available, "Available for Matches?" %>
-            <%= f.check_box :available, {}, true, false %>
-          </div>
 
           <div>
-            <%= f.label :pet_photo, "Pet Photo" %>
-            <%= f.file_field :pet_photo, class: "form-control" %>
+            <%= form.label :pet_photo, "Upload photos" %><br>
+            <%= form.file_field :pet_photos, multiple: true, direct_upload: true, class: "form-control" %>
           </div>
         </div>
 

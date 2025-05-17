@@ -16,19 +16,19 @@
 
             <div>
               <%= form.label :breed, "Breed" %><br>
-              <%= form.text_field :breed %>
+              <%= form.text_field :breed, spellcheck: true %>
             </div>
 
             <div>
               <%= form.label :age, "Age" %><br>
-              <%= form.number_field :age %>
+              <%= form.select :age, (0..30).to_a, {} %>
             </div>
           </div>
 
           <div class="col-4 mr-auto">
             <div>
               <%= form.label :size, "Size" %><br>
-              <%= form.text_field :size %>
+              <%= form.select :size, Pet::VALID_SIZES, {} %>
             </div>
 
             <div>
@@ -38,14 +38,10 @@
           </div>
 
           <div class="col-4 mr-auto">
+
             <div>
-              <%= form.label :available, "Available" %><br>
-              <%= form.check_box :available %>
-            </div>
-            <!-- Here’s the important bit for the photo upload: -->
-            <div>
-              <%= form.label :pet_photo, "Upload a photo" %><br>
-              <%= form.file_field :pet_photo %>
+              <%= form.label :pet_photos, "Upload Images" %>
+              <%= form.file_field :pet_photos, multiple: true, direct_upload: true, class: "form-control input-border" %>
             </div>
           </div>
 
@@ -55,8 +51,8 @@
   </div>
 
   <div class="mt-4">
-          <%= form.submit "Create Pet" %>
-        <% end %>
+    <%= form.submit "Create Pet" %>
+    <% end %>
   </div>
 
 </div>

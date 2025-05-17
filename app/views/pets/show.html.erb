@@ -25,4 +25,7 @@
 <div class="actions">
   <%= link_to "Back to All Pets", pets_path, class: "btn btn-secondary mt-3" %>
   <%= link_to "All Matches", bookings_path, class: "btn btn-primary mt-3" %>
+  <% if current_user == @pet.user %>
+    <%= link_to "Edit Pet", edit_pet_path(@pet), class: "btn btn-outline-primary mt-3" %>
+  <% end %>
 </div>
