@@ -67,7 +67,9 @@ class PetsController < ApplicationController
     if @pet.save
       redirect_to @pet, notice: 'Pet was successfully added.'
     else
-      render :new, status: :unprocessable_entity
+      Rails.logger.debug @pet.errors.full_messages.inspect
+      render :new, status: :unprocessable_entity,
+      notice: 'Pet could not be added. Please try again.'
     end
   end
 
@@ -108,6 +110,7 @@ class PetsController < ApplicationController
 
   def pet_params
     params.require(:pet).permit(:pet_name,
+                                :animal_type,
                                 :breed,
                                 :age,
                                 :size,
@@ -117,6 +120,6 @@ class PetsController < ApplicationController
                                 :available_until,
                                 :highlights,
                                 :pet_photo,
-                                :pet_photos)
+                                pet_photos: [])
   end
   end

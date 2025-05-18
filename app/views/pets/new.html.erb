@@ -15,36 +15,50 @@
             </div>
 
             <div>
+              <%= form.label :animal_type, "Animal Type" %><br>
+              <%= form.select :animal_type, Pet::VALID_ANIMALS, {} %>
+            </div>
+
+            <div>
               <%= form.label :breed, "Breed" %><br>
-              <%= form.text_field :breed, spellcheck: true %>
+              <%= form.text_field :breed %>
             </div>
 
-            <div>
-              <%= form.label :age, "Age" %><br>
-              <%= form.select :age, (0..30).to_a, {} %>
             </div>
+            
+            <div class="col-4 mr-auto">
+              <div>
+                <%= form.label :size, "Size" %><br>
+                <%= form.select :size, Pet::VALID_SIZES, {} %>
+              </div>
+            
+              <div>
+                <%= form.label :age, "Age" %><br>
+                <%= form.select :age, ["< 1"] + (1..30).to_a, {} %>
+              </div>
+
+              <div>
+                <%= form.label :description, "Description" %><br>
+                <%= form.text_area :description %>
+              </div>
+            </div>
+            
+            
+            <div class="col-4 mr-auto">
+            <div class="form-group mb-3">
+            <%= form.label :pet_photos, "Upload Pet Photos" %>
+            <%= form.file_field :pet_photos, multiple: true, accept: 'image/*', direct_upload: true, class: "form-control input-border", id: "photo-upload" %>
+          
+            <small class="form-text text-muted">Max 5 photos. First = profile. Drag to reorder.</small>
+          
+            <!-- Preview container for sortable thumbnails -->
+            <div id="preview-container" class="d-flex flex-wrap gap-2 mt-3"></div>
+          
+            <!-- Hidden input to store sorted file order -->
+            <input type="hidden" name="photo_order" id="photo-order-input">
           </div>
-
-          <div class="col-4 mr-auto">
-            <div>
-              <%= form.label :size, "Size" %><br>
-              <%= form.select :size, Pet::VALID_SIZES, {} %>
-            </div>
-
-            <div>
-              <%= form.label :description, "Description" %><br>
-              <%= form.text_area :description %>
-            </div>
+           
           </div>
-
-          <div class="col-4 mr-auto">
-
-            <div>
-              <%= form.label :pet_photos, "Upload Images" %>
-              <%= form.file_field :pet_photos, multiple: true, direct_upload: true, class: "form-control input-border" %>
-            </div>
-          </div>
-
         </div>
       </div>
     </div>
@@ -56,3 +70,75 @@
   </div>
 
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const fileInput = document.getElementById("photo-upload");
+  const previewContainer = document.getElementById("preview-container");
+  const photoOrderInput = document.getElementById("photo-order-input");
+  let selectedFiles = [];
+
+  fileInput.addEventListener("change", (event) => {
+    const files = Array.from(event.target.files);
+
+    // Prevent more than 5 files
+    if (selectedFiles.length + files.length > 5) {
+      alert("You can only upload up to 5 images.");
+      return;
+    }
+
+    files.forEach((file) => {
+      selectedFiles.push(file);
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        const div = document.createElement("div");
+        div.classList.add("image-preview", "position-relative");
+
+        div.innerHTML = `
+          <img src="${e.target.result}" class="rounded" style="width: 100px; height: 100px; object-fit: cover;" />
+          <button type="button" class="btn-close position-absolute top-0 end-0 btn-sm" aria-label="Remove"></button>
+        `;
+
+        // Remove functionality
+        div.querySelector(".btn-close").addEventListener("click", () => {
+          const index = Array.from(previewContainer.children).indexOf(div);
+          selectedFiles.splice(index, 1);
+          div.remove();
+          updateInputFiles();
+        });
+
+        previewContainer.appendChild(div);
+        updateInputFiles();
+      };
+
+      reader.readAsDataURL(file);
+    });
+
+    // Reset input so user can re-upload same file if removed
+    fileInput.value = "";
+  });
+
+  // Make sortable
+  Sortable.create(previewContainer, {
+    animation: 150,
+    onSort: () => updateInputFiles()
+  });
+
+  function updateInputFiles() {
+    const dataTransfer = new DataTransfer();
+    selectedFiles.forEach(file => dataTransfer.items.add(file));
+    fileInput.files = dataTransfer.files;
+
+    // Optional: highlight first photo
+    Array.from(previewContainer.children).forEach((el, index) => {
+      el.classList.toggle("border-primary", index === 0);
+      el.classList.toggle("border", true);
+    });
+
+    // Store order info (optional, if needed in controller)
+    photoOrderInput.value = selectedFiles.map((_, i) => i).join(",");
+  }
+});
+
+</script>

@@ -119,8 +119,8 @@
           <% if @user.pets.any? %>
             <% @user.pets.each do |pet| %>
               <div class="d-flex align-items-center justify-content-left">
-                  <% if pet.pet_photo.attached? %>
-                    <%= image_tag url_for(pet.pet_photo), alt: pet.pet_name, class: "pet-photo" %>
+                  <% if pet.pet_photos.attached? %>
+                    <%= image_tag url_for(pet.pet_photos.first), alt: pet.pet_name, class: "pet-photo" %>
                   <% else %>
                     <p><em>No photo uploaded for this pet.</em></p>
                   <% end %>

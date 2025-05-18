@@ -20,8 +20,9 @@ class Pet < ApplicationRecord
   end
   
   VALID_SIZES = ["Small", "Medium", "Large"]
-  VALID_ANIMALS = ["Dog", "Cat", "Rabbit", "Hamster", "Bird", "Reptile"]
+  VALID_ANIMALS = ["Dog", "Cat", "Rabbit", "Hamster", "Bird", "Reptile", "Guinea Pig", "Other"]
 
   validates :size, inclusion: { in: VALID_SIZES }
-  validates :breed, inclusion: { in: VALID_ANIMALS } 
+  validates :animal_type, inclusion: { in: VALID_ANIMALS }
+  validates :breed, presence: true 
 end

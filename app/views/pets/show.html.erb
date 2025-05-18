@@ -6,11 +6,20 @@
 <p><strong>Age:</strong> <%= @pet.age %> years</p>
 <p><strong>Size:</strong> <%= @pet.size %></p>
 
-<%= image_tag @pet.pet_photo if @pet.pet_photo.present? %>
+<% if @pet.pet_photos.attached? %>
+  <%= image_tag url_for(@pet.pet_photos.first), alt: "#{@pet.pet_name} image", class: "pet-main-image" %>
+<% else %>
+  <%= image_tag "placeholder.jpg", alt: "No pet image yet", class: "pet-main-image" %>
+<% end %>
+
 <p><strong>Description:</strong> <%= @pet.description %></p>
 <p>
   <strong>Availability:</strong>
-  <%= @pet.available ? "Available to match" : "Not available to match" %>
+  <% if @pet.available_from && (@pet.available_until.nil? || Date.today <= @pet.available_until) %>
+    <%= "#{@pet.available_from.strftime("%-d %b %Y")} – #{@pet.available_until&.strftime("%-d %b %Y") || "Open" }" %>
+  <% else %>
+    <em>Currently not available</em>
+  <% end %>
 </p>
 <div class="booking-section">
 
