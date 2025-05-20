@@ -1,60 +1,287 @@
 <div class="card-pet-new d-flex flex-column align-items-center justify-content-center p-5" style="background-color: #967969;">
   <div class="d-flex flex-column align-items-center justify-content-center">
-    <h1 class="text-white"><strong>Edit Your Pet Details</strong></h1>
+    <h1 class="text-white"><strong>Edit Pet Details</strong></h1>
   </div>
 
-<div class="container">
-  <div class="card-pet-details mt-4 mb-2 p-4">
-    <div class="row">
-      <div class="form-action d-flex align-items-center justify-content-between">
-        <div class="col-4 p-2">
-          <%= form_with model: @pet, local: true do |f| %>
-            <div>
-              <%= f.label :pet_name, "Pet Name" %>
-              <%= f.text_field :pet_name, class: "form-control", value: @pet.pet_name %>
+  <div class="container">
+    <div class="card-pet-details mt-4 mb-2 p-4">
+      <div class="row">
+        <div class="form-action d-flex align-items-center justify-content-between">
+          <div class="col-4">
+            <%= form_with(model: @pet, local: true, html: { multipart: true, id: "edit-pet-form" }) do |form| %>
+              <!-- Standard fields (name, animal_type, breed, etc) -->
+              <div>
+                <%= form.label :pet_name, "Pet Name" %><br>
+                <%= form.text_field :pet_name %>
+              </div>
+              <div>
+                <%= form.label :animal_type, "Animal Type" %><br>
+                <%= form.select :animal_type, Pet::VALID_ANIMALS, {} %>
+              </div>
+              <div>
+                <%= form.label :breed, "Breed" %><br>
+                <%= form.text_field :breed %>
+              </div>
+
+              <div class="form-group">
+                <%= form.label :location %>
+                <%= form.text_field :location, class: "form-control", id: "pet-location-input", autocomplete: "on" %>
+                <button type="button" id="pet-detect-location-btn" class="btn btn-secondary btn-sm mt-2">Use my current location</button>
+                <button type="button" id="reset-to-profile-location-btn" class="btn btn-link btn-sm mt-2">Use profile location</button>
+              </div>
             </div>
 
-            <div>
-              <%= f.label :breed, "Breed" %>
-              <%= f.text_field :breed, class: "form-control", value: @pet.breed %>
+            <div class="col-4 mr-auto">
+              <div>
+                <%= form.label :size, "Size" %><br>
+                <%= form.select :size, Pet::VALID_SIZES, {} %>
+              </div>
+              <div>
+                <%= form.label :age, "Age" %><br>
+                <%= form.select :age, ["< 1"] + (1..30).to_a, {} %>
+              </div>
+              <div>
+                <%= form.label :description, "Description" %><br>
+                <%= form.text_area :description %>
+              </div>
             </div>
 
-            <div>
-              <%= f.label :age, "Age" %>
-              <%= f.number_field :age, class: "form-control", value: @pet.age %>
+            <div class="col-4 mr-auto">
+
+            <div class="form-group mb-3">
+              <label><strong>Pet Photos</strong></label>
+              <small class="form-text text-muted">First = profile. Drag to reorder. Click ✕ to remove.</small>
+              <input type="file" id="photo-upload" class="form-control input-border mt-2" multiple accept="image/*" />
+              <small class="form-text text-muted">You can add new photos (up to 5 total after save).</small>
+              <div id="unified-preview-container" class="d-flex flex-wrap gap-2 mt-3"></div>
+              <!-- JS will insert hidden fields here -->
             </div>
-        </div>
 
-        <div class="col-4 p-2">
-          <div>
-            <%= f.label :size, "Size" %>
-            <%= f.select :size, ['Small', 'Medium', 'Large'], { selected: @pet.size }, class: "form-control" %>
-          </div>
-
-          <div>
-            <%= f.label :description, "Description" %>
-            <%= f.text_area :description, class: "form-control", value: @pet.description %>
-          </div>
-        </div>
-
-        <div class="col-4 p-2">
-
-          <div>
-            <%= form.label :pet_photo, "Upload photos" %><br>
-            <%= form.file_field :pet_photos, multiple: true, direct_upload: true, class: "form-control" %>
+            <!-- Pass initial photo data to JS, just above your main script -->
+            <script>
+              window.petPhotoData = [
+                <% @pet.pet_photos.order(:position).each_with_index do |photo, idx| %>
+                  {
+                    id: "<%= photo.id %>",
+                    url: "<%= url_for(photo.image.variant(resize_to_fill: [100,100])) %>",
+                    isExisting: true,
+                    position: <%= idx %>
+                  },
+                <% end %>
+              ];
+            </script>
+            
+            </div>
           </div>
         </div>
-
       </div>
+    </div>
+    <div class="mt-4">
+      <%= form.submit "Save Changes" %>
+      <%= link_to "Cancel", pet_path(@pet), class: "btn btn-secondary mt-3" %>
+    <% end %>
     </div>
   </div>
 </div>
 
-<div>
-      <%= f.submit "Save Changes", class: "btn btn-light mt-3" %>
-      <% end %>
+<script src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAPS_API_KEY'] %>&libraries=places"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const detectBtn = document.getElementById('pet-detect-location-btn');
+  const locationInput = document.getElementById('pet-location-input');
+  const profileLocationBtn = document.getElementById('reset-to-profile-location-btn');
+  // Use current_user.location from Rails
+  const userProfileLocation = "<%= j(current_user.location || '') %>";
 
-      <%= link_to "Cancel", pet_path(@pet), class: "btn btn-secondary mt-3" %>
-</div>
+  // Google Places Autocomplete (for both new and edit)
+  if (locationInput && window.google && google.maps && google.maps.places) {
+    const autocomplete = new google.maps.places.Autocomplete(locationInput, {
+      types: ["geocode"],
+      componentRestrictions: { country: "gb" }
+    });
+  }
 
-</div>
+  // Use profile location
+  if (profileLocationBtn && locationInput) {
+    profileLocationBtn.addEventListener('click', function() {
+      locationInput.value = userProfileLocation;
+    });
+  }
+
+  // Use my current location
+  if (detectBtn && locationInput) {
+    detectBtn.addEventListener('click', function() {
+      if ("geolocation" in navigator) {
+        detectBtn.disabled = true;
+        detectBtn.innerText = "Getting location...";
+        navigator.geolocation.getCurrentPosition(function(position) {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
+            .then(response => response.json())
+            .then(data => {
+              if (data && data.display_name) {
+                locationInput.value = data.display_name;
+              } else {
+                alert("Could not determine address. Please enter manually.");
+              }
+              detectBtn.disabled = false;
+              detectBtn.innerText = "Use my current location";
+            })
+            .catch(() => {
+              alert("Address lookup failed. Please enter manually.");
+              detectBtn.disabled = false;
+              detectBtn.innerText = "Use my current location";
+            });
+        }, function(error) {
+          alert("Unable to get your location. Please check permissions.");
+          detectBtn.disabled = false;
+          detectBtn.innerText = "Use my current location";
+        });
+      } else {
+        alert("Geolocation is not supported by your browser.");
+      }
+    });
+  }
+});
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const container = document.getElementById("unified-preview-container");
+  const form = document.getElementById("edit-pet-form");
+  const uploadInput = document.getElementById("photo-upload");
+  const maxPhotos = 5;
+  let images = window.petPhotoData ? window.petPhotoData.slice() : [];
+
+  function renderImages() {
+    container.innerHTML = "";
+    // Remove all old dynamic hidden fields
+    form.querySelectorAll(".dynamic-hidden-photo").forEach(e => e.remove());
+
+    // Only include images not deleted
+    const visibleImages = images.filter(img => !img._destroy);
+
+    visibleImages.forEach((img, idx) => {
+      const div = document.createElement("div");
+      div.className = "image-preview position-relative border" + (idx === 0 ? " border-primary" : "");
+      div.style.display = "inline-block";
+      div.style.marginRight = "10px";
+      div.style.position = "relative";
+      div.dataset.index = idx;
+      div.innerHTML = `
+        <img src="${img.url}" class="rounded" style="width:100px;height:100px;object-fit:cover;" />
+        <button type="button" class="btn-close position-absolute top-0 end-0 btn-sm remove-photo" aria-label="Remove"></button>
+      `;
+      container.appendChild(div);
+
+      div.querySelector(".remove-photo").onclick = function() {
+        if (img.isExisting) {
+          img._destroy = true;
+        } else {
+          images.splice(images.indexOf(img), 1);
+        }
+        renderImages();
+      };
+    });
+
+    // For *all* images (including deleted), output hidden fields so Rails knows about deletes/positions.
+    images.forEach((img, idx) => {
+      // The true, final position is the index in the visible array if not _destroy, or -1 if _destroy
+      const visibleIdx = img._destroy ? -1 : visibleImages.indexOf(img);
+
+      if (img.isExisting) {
+        let idField = document.createElement("input");
+        idField.type = "hidden";
+        idField.name = `pet[pet_photos_attributes][${idx}][id]`;
+        idField.value = img.id;
+        idField.className = "dynamic-hidden-photo";
+        form.appendChild(idField);
+
+        let posField = document.createElement("input");
+        posField.type = "hidden";
+        posField.name = `pet[pet_photos_attributes][${idx}][position]`;
+        // Only assign a real position if not destroyed, otherwise -1
+        posField.value = visibleIdx;
+        posField.className = "dynamic-hidden-photo";
+        form.appendChild(posField);
+
+        let destroyField = document.createElement("input");
+        destroyField.type = "hidden";
+        destroyField.name = `pet[pet_photos_attributes][${idx}][_destroy]`;
+        destroyField.value = img._destroy ? "1" : "false";
+        destroyField.className = "dynamic-hidden-photo";
+        form.appendChild(destroyField);
+      }
+      // For new images, add a new_photo_positions[] for each, matching file order
+      if (!img.isExisting && !img._destroy) {
+        let posField = document.createElement("input");
+        posField.type = "hidden";
+        posField.name = "pet[new_photo_positions][]";
+        posField.value = visibleImages.indexOf(img); // the intended position
+        posField.className = "dynamic-hidden-photo";
+        form.appendChild(posField);
+      }
+    });
+
+    makeSortable();
+  }
+
+  function makeSortable() {
+    if (container.sortable) return;
+    Sortable.create(container, {
+      animation: 150,
+      onEnd: function(evt) {
+        if (evt.oldIndex === evt.newIndex) return;
+        const moved = images.splice(evt.oldIndex, 1)[0];
+        images.splice(evt.newIndex, 0, moved);
+        renderImages();
+      }
+    });
+    container.sortable = true;
+  }
+
+  // File uploads
+  if (uploadInput) {
+    uploadInput.addEventListener("change", function(event) {
+      const files = Array.from(event.target.files);
+      const numCurrent = images.filter(img => !img._destroy).length;
+      if ((numCurrent + files.length) > maxPhotos) {
+        alert("You can only upload up to 5 photos total.");
+        uploadInput.value = "";
+        return;
+      }
+      files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          images.push({file: file, url: e.target.result, isExisting: false});
+          renderImages();
+        };
+        reader.readAsDataURL(file);
+      });
+      uploadInput.value = "";
+    });
+  }
+
+  // On form submit: set up file input for new images in correct order
+  form.addEventListener("submit", function(event) {
+    // Remove all file inputs
+    Array.from(form.querySelectorAll("input[type='file']")).forEach(input => input.remove());
+    // Only add new files (in the preview order)
+    const newFileInput = document.createElement("input");
+    newFileInput.type = "file";
+    newFileInput.name = "pet[pet_photos][]";
+    newFileInput.multiple = true;
+    newFileInput.style.display = "none";
+    const dt = new DataTransfer();
+    images.forEach(img => {
+      if (!img.isExisting && !img._destroy) dt.items.add(img.file);
+    });
+    newFileInput.files = dt.files;
+    form.appendChild(newFileInput);
+  });
+
+  renderImages();
+});
+</script>

@@ -5,9 +5,9 @@ class Pet < ApplicationRecord
     using: { tsearch: { prefix: true } }
 
   belongs_to :user
-  has_one_attached :pet_photo
-  has_many_attached :pet_photos
   has_many :bookings, dependent: :destroy
+  has_many :pet_photos, -> { order(:position) }, dependent: :destroy
+  accepts_nested_attributes_for :pet_photos, allow_destroy: true
 
   validates :pet_name, :breed, :age, :size, :description, presence: true
 

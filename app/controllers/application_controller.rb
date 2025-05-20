@@ -9,8 +9,8 @@ class ApplicationController < ActionController::Base
 
   # Permit additional fields (like username, first_name, last_name) for Devise
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:username, :first_name, :last_name])
-    devise_parameter_sanitizer.permit(:account_update, keys: [:username, :first_name, :last_name])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:username, :first_name, :last_name, :location])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:username, :first_name, :last_name, :location])
   end
 
   def set_user

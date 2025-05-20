@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_05_18_112658) do
+ActiveRecord::Schema[7.1].define(version: 2025_05_20_134936) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -54,6 +54,14 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_18_112658) do
     t.index ["user_id"], name: "index_bookings_on_user_id"
   end
 
+  create_table "pet_photos", force: :cascade do |t|
+    t.bigint "pet_id", null: false
+    t.integer "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pet_id"], name: "index_pet_photos_on_pet_id"
+  end
+
   create_table "pets", force: :cascade do |t|
     t.string "pet_name"
     t.string "breed"
@@ -87,6 +95,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_18_112658) do
     t.string "last_name"
     t.text "bio"
     t.boolean "is_owner", default: false, null: false
+    t.string "location"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -95,5 +104,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_18_112658) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "bookings", "pets"
   add_foreign_key "bookings", "users"
+  add_foreign_key "pet_photos", "pets"
   add_foreign_key "pets", "users"
 end

@@ -44,10 +44,13 @@ def create_pet(attributes)
     attributes[:photo_urls].first(5).each_with_index do |url, index|
       begin
         file = URI.open(url)
-        pet.pet_photos.attach(
-          io: file,
-          filename: "photo#{index + 1}.jpg",
-          content_type: "image/jpeg"
+        pet.pet_photos.create!(
+          position: index,
+          image: {
+            io: file,
+            filename: "photo#{index + 1}.jpg",
+            content_type: "image/jpeg"
+          }
         )
       rescue => e
         puts "Failed to attach photo #{index + 1} for #{pet.pet_name}: #{e.message}"
@@ -57,6 +60,7 @@ def create_pet(attributes)
 
   puts "Pet '#{pet.pet_name}' created with #{pet.pet_photos.count} photo(s) and geocoded!"
 end
+
 
 
 create_pet(

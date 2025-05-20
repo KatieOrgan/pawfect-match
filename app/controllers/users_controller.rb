@@ -51,7 +51,7 @@ class UsersController < ApplicationController
   end
 
   def user_details_params
-    params.require(:user).permit(:username, :first_name, :last_name, :email, :bio, :is_owner)
+    params.require(:user).permit(:username, :first_name, :last_name, :bio, :location, :email)
   end
   
   # This removes password from validations if not provided

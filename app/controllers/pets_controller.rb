@@ -59,34 +59,65 @@ class PetsController < ApplicationController
 
   def new
     @pet = Pet.new
-  end
+
+    (5 - @pet.pet_photos.size).times { @pet.pet_photos.build }
+    
+    @pet.location = current_user.location if current_user.location.present?
+  end 
 
   def create
-    @pet = Pet.new(pet_params)
+    @pet = Pet.new(pet_params.except(:pet_photos))  # Don't include pet_photos in mass assignment
     @pet.user = current_user
+  
+    # Handle image uploads (in order)
+    if pet_params[:pet_photos].present?
+      pet_params[:pet_photos].reject(&:blank?).each_with_index do |image_file, idx|
+        @pet.pet_photos.build(image: image_file, position: idx)
+      end
+    end
+  
     if @pet.save
-      redirect_to @pet, notice: 'Pet was successfully added.'
+      redirect_to @pet, notice: "Pet was successfully added."
     else
       Rails.logger.debug @pet.errors.full_messages.inspect
-      render :new, status: :unprocessable_entity,
-      notice: 'Pet could not be added. Please try again.'
+      render :new, status: :unprocessable_entity, notice: "Pet could not be added. Please try again."
     end
   end
-
+ 
+  
   def edit
     @pet = Pet.find(params[:id])
   end
 
   def update
     @pet = Pet.find(params[:id])
-    if @pet.update(pet_params)
+  
+    # Step 1: Update all existing images and their positions/deletions
+    if @pet.update(pet_params.except(:pet_photos))
+      # Step 2: Add new uploads at their intended positions
+      if params[:pet][:pet_photos].present?
+        new_positions = params[:pet][:new_photo_positions]&.map(&:to_i) || []
+        files = params[:pet][:pet_photos].reject(&:blank?)
+        files.each_with_index do |file, idx|
+          # This is the intended position as chosen in the UI (profile = 0, etc)
+          position = new_positions[idx] || (@pet.pet_photos.maximum(:position) || -1) + 1
+          @pet.pet_photos.build(image: file, position: position)
+        end
+        @pet.save # Save new photos
+      end
+  
+      # After saving, ensure all photos (existing and new) are re-ordered by position
+      @pet.pet_photos.order(:position).each_with_index do |photo, idx|
+        photo.update_column(:position, idx)
+      end
+  
       redirect_to @pet, notice: 'Pet was successfully updated.'
     else
       render :edit, status: :unprocessable_entity
     end
   end
-
-  def destroy
+  
+    def destroy
     @pet = Pet.find(params[:id])
 
     # Allow only the owner to delete the pet
@@ -119,7 +150,8 @@ class PetsController < ApplicationController
                                 :available_from,
                                 :available_until,
                                 :highlights,
-                                :pet_photo,
-                                pet_photos: [])
+                                pet_photos: [],
+                                pet_photos_attributes: [:id, :image, :position, :_destroy]
+    )
   end
-  end
+end

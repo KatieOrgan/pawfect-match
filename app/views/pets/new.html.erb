@@ -8,7 +8,7 @@
       <div class="row">
         <div class="form-action d-flex align-items-center justify-content-between">
           <div class="col-4">
-          <%= form_with(model: @pet, local: true) do |form| %>
+          <%= form_with(model: @pet, local: true, html: { multipart: true, id: "new-pet-form" }) do |form| %>
             <div>
               <%= form.label :pet_name, "Pet Name" %><br>
               <%= form.text_field :pet_name %>
@@ -22,6 +22,13 @@
             <div>
               <%= form.label :breed, "Breed" %><br>
               <%= form.text_field :breed %>
+            </div>
+
+            <div class="form-group">
+              <%= form.label :location %>
+              <%= form.text_field :location, class: "form-control", id: "pet-location-input", autocomplete: "on" %>
+              <button type="button" id="pet-detect-location-btn" class="btn btn-secondary btn-sm mt-2">Use my current location</button>
+              <button type="button" id="reset-to-profile-location-btn" class="btn btn-link btn-sm mt-2">Use profile location</button>
             </div>
 
             </div>
@@ -43,102 +50,180 @@
               </div>
             </div>
             
-            
             <div class="col-4 mr-auto">
-            <div class="form-group mb-3">
-            <%= form.label :pet_photos, "Upload Pet Photos" %>
-            <%= form.file_field :pet_photos, multiple: true, accept: 'image/*', direct_upload: true, class: "form-control input-border", id: "photo-upload" %>
-          
-            <small class="form-text text-muted">Max 5 photos. First = profile. Drag to reorder.</small>
-          
-            <!-- Preview container for sortable thumbnails -->
-            <div id="preview-container" class="d-flex flex-wrap gap-2 mt-3"></div>
-          
-            <!-- Hidden input to store sorted file order -->
-            <input type="hidden" name="photo_order" id="photo-order-input">
-          </div>
-           
+              <div class="form-group mb-3">
+                <%= form.label :pet_photos, "Upload Pet Photos" %>
+                <!-- Multi-upload input, the only file input in the form -->
+                <input type="file" id="photo-upload" name="pet[pet_photos][]"
+                  class="form-control input-border mt-2" multiple accept="image/*" />
+
+                <small class="form-text text-muted">Max 5 photos. First = profile. Drag to reorder.</small>
+                <div id="preview-container" class="d-flex flex-wrap gap-2 mt-3"></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="mt-4">
+    <div class="mt-4">
     <%= form.submit "Create Pet" %>
     <% end %>
-  </div>
+  </div></div>
 
 </div>
 
+
 <script>
+// Use this JS after the DOM loads
+
 document.addEventListener("DOMContentLoaded", () => {
-  const fileInput = document.getElementById("photo-upload");
+  const uploadInput = document.getElementById("photo-upload");
   const previewContainer = document.getElementById("preview-container");
-  const photoOrderInput = document.getElementById("photo-order-input");
-  let selectedFiles = [];
+  const form = document.getElementById("new-pet-form");
+  let fileList = [];
 
-  fileInput.addEventListener("change", (event) => {
+  if (!uploadInput || !previewContainer || !form) return;
+
+  uploadInput.addEventListener("change", (event) => {
     const files = Array.from(event.target.files);
-
-    // Prevent more than 5 files
-    if (selectedFiles.length + files.length > 5) {
+    if ((fileList.length + files.length) > 5) {
       alert("You can only upload up to 5 images.");
+      uploadInput.value = "";
       return;
     }
 
-    files.forEach((file) => {
-      selectedFiles.push(file);
+    files.forEach(file => {
+      fileList.push(file);
+    });
+
+    renderPreviews();
+    uploadInput.value = "";
+  });
+
+  function renderPreviews() {
+    previewContainer.innerHTML = "";
+    fileList.forEach((file, index) => {
+      const div = document.createElement("div");
+      div.classList.add("image-preview", "position-relative", "border");
+      if (index === 0) div.classList.add("border-primary");
       const reader = new FileReader();
-
       reader.onload = (e) => {
-        const div = document.createElement("div");
-        div.classList.add("image-preview", "position-relative");
-
         div.innerHTML = `
           <img src="${e.target.result}" class="rounded" style="width: 100px; height: 100px; object-fit: cover;" />
           <button type="button" class="btn-close position-absolute top-0 end-0 btn-sm" aria-label="Remove"></button>
         `;
-
-        // Remove functionality
+        // Remove button
         div.querySelector(".btn-close").addEventListener("click", () => {
-          const index = Array.from(previewContainer.children).indexOf(div);
-          selectedFiles.splice(index, 1);
-          div.remove();
-          updateInputFiles();
+          fileList.splice(index, 1);
+          renderPreviews();
         });
-
-        previewContainer.appendChild(div);
-        updateInputFiles();
       };
-
       reader.readAsDataURL(file);
+      previewContainer.appendChild(div);
     });
-
-    // Reset input so user can re-upload same file if removed
-    fileInput.value = "";
-  });
-
-  // Make sortable
-  Sortable.create(previewContainer, {
-    animation: 150,
-    onSort: () => updateInputFiles()
-  });
-
-  function updateInputFiles() {
-    const dataTransfer = new DataTransfer();
-    selectedFiles.forEach(file => dataTransfer.items.add(file));
-    fileInput.files = dataTransfer.files;
-
-    // Optional: highlight first photo
-    Array.from(previewContainer.children).forEach((el, index) => {
-      el.classList.toggle("border-primary", index === 0);
-      el.classList.toggle("border", true);
-    });
-
-    // Store order info (optional, if needed in controller)
-    photoOrderInput.value = selectedFiles.map((_, i) => i).join(",");
+    makeSortable();
   }
+
+  // Make sortable after render
+  function makeSortable() {
+    if (previewContainer.sortable) return;
+    Sortable.create(previewContainer, {
+      animation: 150,
+      onEnd: function (evt) {
+        if (evt.oldIndex === evt.newIndex) return;
+        // Move file in array
+        const moved = fileList.splice(evt.oldIndex, 1)[0];
+        fileList.splice(evt.newIndex, 0, moved);
+        renderPreviews(); // Re-render to fix indices and highlight first
+      }
+    });
+    previewContainer.sortable = true;
+  }
+
+  // On form submit, re-create a new file input (with correct order) and remove the old one
+  form.addEventListener("submit", (event) => {
+    // Remove all file inputs (including the original one)
+    Array.from(form.querySelectorAll("input[type='file']")).forEach(input => input.remove());
+
+    // Create a new file input
+    const newFileInput = document.createElement("input");
+    newFileInput.type = "file";
+    newFileInput.name = "pet[pet_photos][]";
+    newFileInput.multiple = true;
+    newFileInput.style.display = "none";
+
+    // Use DataTransfer to set file order
+    const dt = new DataTransfer();
+    fileList.forEach(file => dt.items.add(file));
+    newFileInput.files = dt.files;
+
+    form.appendChild(newFileInput);
+  });
 });
 
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAPS_API_KEY'] %>&libraries=places"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const detectBtn = document.getElementById('pet-detect-location-btn');
+  const locationInput = document.getElementById('pet-location-input');
+  const profileLocationBtn = document.getElementById('reset-to-profile-location-btn');
+
+  // Set from user's profile location
+  <%# Make the user's location available in JS %>
+  const userProfileLocation = "<%= j(current_user.location || '') %>";
+
+  if (profileLocationBtn && locationInput && userProfileLocation) {
+    profileLocationBtn.addEventListener('click', function() {
+      locationInput.value = userProfileLocation;
+    });
+  }
+
+  // Detect current location (geolocation)
+  if (detectBtn && locationInput) {
+    detectBtn.addEventListener('click', function() {
+      if ("geolocation" in navigator) {
+        detectBtn.disabled = true;
+        detectBtn.innerText = "Getting location...";
+        navigator.geolocation.getCurrentPosition(function(position) {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
+            .then(response => response.json())
+            .then(data => {
+              if (data && data.display_name) {
+                locationInput.value = data.display_name;
+              } else {
+                alert("Could not determine address. Please enter manually.");
+              }
+              detectBtn.disabled = false;
+              detectBtn.innerText = "Use my current location";
+            })
+            .catch(() => {
+              alert("Address lookup failed. Please enter manually.");
+              detectBtn.disabled = false;
+              detectBtn.innerText = "Use my current location";
+            });
+        }, function(error) {
+          alert("Unable to get your location. Please check permissions.");
+          detectBtn.disabled = false;
+          detectBtn.innerText = "Use my current location";
+        });
+      } else {
+        alert("Geolocation is not supported by your browser.");
+      }
+    });
+  }
+
+  // Google Places Autocomplete
+  if (locationInput && window.google && google.maps && google.maps.places) {
+    const autocomplete = new google.maps.places.Autocomplete(locationInput, {
+      types: ["geocode"],
+      componentRestrictions: { country: "gb" }
+    });
+  }
+});
 </script>

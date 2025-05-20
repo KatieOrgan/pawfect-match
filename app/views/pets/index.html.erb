@@ -84,9 +84,9 @@
   <div class="cards">
     <% @pets.each do |pet| %>
       <div class="card-pet">
-        <% if pet.pet_photos.attached? %>
+        <% if pet.pet_photos.any? %>
           <%= link_to pet_path(pet), class: "card-pet-image-link" do %>
-            <%= image_tag url_for(pet.pet_photos.first), alt: "#{pet.pet_name} image", class: "card-img-top" %>
+            <%= image_tag url_for(pet.pet_photos.first.image), alt: "#{pet.pet_name} image", class: "card-img-top" %>
           <% end %>
         <% else %>
           <p><em>No photo uploaded</em></p>
@@ -118,7 +118,7 @@
       lat: p.latitude,
       lng: p.longitude,
       id: p.id,
-      image_url: p.pet_photos.attached? ? url_for(p.pet_photos.first) : nil
+      image_url: p.pet_photos.any? ? url_for(p.pet_photos.first.image) : nil
     }
   }.to_json %>;
 </script>
