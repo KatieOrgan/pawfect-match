@@ -6,11 +6,21 @@
 <p><strong>Age:</strong> <%= @pet.age %> years</p>
 <p><strong>Size:</strong> <%= @pet.size %></p>
 
-<%= image_tag @pet.pet_photo if @pet.pet_photo.present? %>
+<% if @pet.pet_photos.any? && @pet.pet_photos.first.image.attached? %>
+  <%= image_tag url_for(@pet.pet_photos.order(:position).first.image), alt: "#{@pet.pet_name} image", class: "pet-main-image" %>
+<% else %>
+  <%= image_tag "https://via.placeholder.com/400x400?text=No+Photo", alt: "No pet image yet", class: "pet-main-image" %>
+<% end %>
+
+
 <p><strong>Description:</strong> <%= @pet.description %></p>
 <p>
   <strong>Availability:</strong>
-  <%= @pet.available ? "Available to match" : "Not available to match" %>
+  <% if @pet.available_from && (@pet.available_until.nil? || Date.today <= @pet.available_until) %>
+    <%= "#{@pet.available_from.strftime("%-d %b %Y")} – #{@pet.available_until&.strftime("%-d %b %Y") || "Open" }" %>
+  <% else %>
+    <em>Currently not available</em>
+  <% end %>
 </p>
 <div class="booking-section">
 
@@ -25,4 +35,7 @@
 <div class="actions">
   <%= link_to "Back to All Pets", pets_path, class: "btn btn-secondary mt-3" %>
   <%= link_to "All Matches", bookings_path, class: "btn btn-primary mt-3" %>
+  <% if current_user == @pet.user %>
+    <%= link_to "Edit Pet", edit_pet_path(@pet), class: "btn btn-outline-primary mt-3" %>
+  <% end %>
 </div>

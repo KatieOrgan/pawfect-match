@@ -87,3 +87,4 @@ gem 'carrierwave', '~> 2.2.3'
 group :development, :test do
   gem 'dotenv-rails'
 end
+gem 'geocoder'

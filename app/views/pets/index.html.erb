@@ -2,35 +2,80 @@
   <h1><strong>View All Pets</strong></h1>
 </div>
 
+<div id="pets-map" style="height: 400px; width: 100%;" class="mb-4 rounded shadow"></div>
+
+
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-sm-8 my-3">
-      <%= form_with url: pets_path, method: :get, class: "d-flex flex-column rounded p-3 filter-border" do %>
-        <!-- Keyword Search -->
-        <%= label_tag :name, "Search by Name" %>
-        <%= text_field_tag :query, params[:query], class: "form-control mb-3 input-border", placeholder: "Type a keyword" %>
-
-        <!-- Filter by Breed -->
-        <div class="form-group mb-3">
-          <%= label_tag :breed, "Filter by Breed" %>
-          <%= select_tag :breed, options_for_select(["All Breeds"] + Pet.distinct.pluck(:breed), params[:breed]), class: "form-select input-border" %>
+    <%= form_with url: pets_path, method: :get, class: "d-flex flex-column rounded p-3 filter-border" do %>
+      <!-- Keyword Search -->
+      <%= label_tag :query, "Search by Name" %>
+      <%= text_field_tag :query, params[:query], class: "form-control mb-3 input-border", placeholder: "Type a keyword" %>
+    
+      <!-- Location Filter -->
+      <div class="form-group mb-3">
+        <%= label_tag :location, "Filter by Location" %>
+        <div class="d-flex">
+          <%= text_field_tag :location, params[:location], class: "form-control input-border me-2", placeholder: "e.g. London or SE1 2NJ", id: "location-input" %>
+          <button type="button" class="btn btn-outline-secondary" onclick="getCurrentLocation()">📍</button>
         </div>
+      </div>
 
-        <!-- Filter by Size -->
-        <div class="form-group mb-3">
-          <%= label_tag :size, "Filter by Size" %>
-          <%= select_tag :size, options_for_select(["All Sizes"] + Pet.distinct.pluck(:size), params[:size]), class: "form-select input-border" %>
-        </div>
+      <!-- Radius Filtering -->
+      <div class="form-group mb-3">
+        <%= label_tag :distance, "Within Distance (miles)" %>
+        <%= select_tag :distance,
+              options_for_select([
+                ["Any", nil],
+                ["0.25 miles", "0.25"],
+                ["0.5 miles", "0.5"],
+                ["1 mile", "1"],
+                ["2 miles", "2"],
+                ["3 miles", "3"],
+                ["5 miles", "5"],
+                ["10 miles", "10"],
+                ["20 miles", "20"],
+                ["30 miles", "30"],
+                ["50 miles", "50"]
+              ], params[:distance]),
+              class: "form-select input-border" %>
+      </div>
 
-        <!-- Filter by Availability -->
-        <div class="form-group mb-3">
-          <%= label_tag :available, "Filter by Availability" %>
-          <%= select_tag :available, options_for_select([["All", nil], ["Available", true], ["Not Available", false]], params[:available]), class: "form-select input-border" %>
-        </div>
+      <!-- Animal Type -->
+      <div class="form-group mb-3">
+        <%= label_tag :breed, "Animal Type" %>
+        <%= select_tag :breed, options_for_select(["Any Type"] + Pet::VALID_ANIMALS, params[:breed]), class: "form-select input-border" %>
+      </div>
 
-        <!-- Submit Button -->
-        <%= submit_tag "Filter", class: "btn text-white mt-2 filter-btn cursor-other" %>
-      <% end %>
+      <!-- Size -->
+      <div class="form-group mb-3">
+        <%= label_tag :size, "Size" %>
+        <%= select_tag :size, options_for_select(["Any Size"] + Pet::VALID_SIZES, params[:size]), class: "form-select input-border" %>
+      </div>
+    
+      <!-- Availability Date Range -->
+      <div class="form-group mb-3">
+        <%= label_tag :available_from, "Available From (on or after)" %>
+        <%= date_field_tag :available_from, params[:available_from], class: "form-control input-border", id: "available_from" %>
+      </div>
+
+      <div class="d-flex gap-2 mt-2">
+        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="setDateToday('available_from')">Today</button>
+        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="setDateTomorrow('available_from')">Tomorrow</button>
+      </div>
+
+      <div class="form-group mb-3">
+        <%= label_tag :available_until, "Available Until (on or before)" %>
+        <%= date_field_tag :available_until, params[:available_until], class: "form-control input-border", id: "available_until" %>
+      </div>
+      
+      <!-- Submit Button -->
+      <%= submit_tag "Filter", class: "btn text-white mt-2 filter-btn cursor-other" %>
+
+      <!-- Reset Button -->
+      <%= link_to "Reset Filters", pets_path, class: "btn btn-outline-secondary mt-2 ms-2" %>
+    <% end %>
     </div>
   </div>
 </div>
@@ -39,9 +84,9 @@
   <div class="cards">
     <% @pets.each do |pet| %>
       <div class="card-pet">
-        <% if pet.pet_photo.attached? %>
+        <% if pet.pet_photos.any? %>
           <%= link_to pet_path(pet), class: "card-pet-image-link" do %>
-            <%= image_tag url_for(pet.pet_photo), alt: "#{pet.pet_name} image" %>
+            <%= image_tag url_for(pet.pet_photos.first.image), alt: "#{pet.pet_name} image", class: "card-img-top" %>
           <% end %>
         <% else %>
           <p><em>No photo uploaded</em></p>
@@ -51,15 +96,169 @@
         <p><strong>Age:</strong> <%= pet.age %> years</p>
         <p><strong>Size:</strong> <%= pet.size %></p>
         <p><strong>Description:</strong> <%= pet.description.truncate(100) %></p>
-
-        <% if pet.available? %>
-          <p><strong>Status:</strong> Available for Booking</p>
-          <!-- Booking link -->
-          <%= link_to "Match with #{pet.pet_name}", new_booking_path(pet_id: pet.id), class: "book-btn" %>
-        <% else %>
-          <p><strong>Status:</strong> Not Available</p>
+        <% if pet.available_from.present? %>
+          <p>
+          <strong>Available:</strong>
+          <%= pet.available_from.strftime("%d %b %Y") %>
+          <% if pet.available_until.present? %>
+          – <%= pet.available_until.strftime("%d %b %Y") %>
         <% end %>
+      </p>
+    <% end %>
       </div>
     <% end %>
   </div>
 </div>
+
+<!-- 🐾 Pets data -->
+<script>
+  const pets = <%= raw @pets.map { |p|
+    {
+      name: CGI.escapeHTML(p.pet_name),
+      lat: p.latitude,
+      lng: p.longitude,
+      id: p.id,
+      image_url: p.pet_photos.any? ? url_for(p.pet_photos.first.image) : nil
+    }
+  }.to_json %>;
+</script>
+
+<!-- 📍 Default map center (from search or fallback) -->
+<script>
+  const defaultCenter = <%= @user_location.to_json.html_safe %>;
+</script>
+
+<!-- 📏 Radius from filter params -->
+<script>
+  const searchRadius = <%= (params[:distance].presence || 1).to_f * 1609.34 %>; // miles to metres
+
+    function getZoomLevelForRadius(radiusInMeters) {
+    if (radiusInMeters <= 403) return 15;      // 0.25 mile
+    if (radiusInMeters <= 805) return 14;      // 0.5 mile
+    if (radiusInMeters <= 1610) return 13;     // 1 mile
+    if (radiusInMeters <= 3220) return 12;     // 2 miles
+    if (radiusInMeters <= 4829) return 11;     // 3 miles
+    if (radiusInMeters <= 8048) return 11;     // 5 miles
+    if (radiusInMeters <= 16094) return 10;    // 10 miles
+    if (radiusInMeters <= 32188) return 9;     // 30 miles
+    if (radiusInMeters <= 48281) return 8;     // 30 miles
+    return 7;                                  // 50+ miles
+  }
+
+  const zoomLevel = getZoomLevelForRadius(searchRadius);
+</script>
+
+<!-- 📦 Map logic -->
+<script>
+  function getCurrentLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+
+        fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=<%= ENV['GOOGLE_MAPS_API_KEY'] %>`)
+          .then(response => response.json())
+          .then(data => {
+            const result = data.results.find(r =>
+              r.types.includes("postal_code") ||
+              r.types.includes("locality") ||
+              r.types.includes("postal_town")
+            );
+
+            if (result) {
+              const locationInput = document.querySelector("input[name='location']");
+              locationInput.value = result.formatted_address;
+            }
+          })
+          .catch(error => console.error("Geolocation error:", error));
+      });
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
+  }
+
+  function initAutocomplete() {
+    const input = document.getElementById("location-input");
+    if (input) {
+      const autocomplete = new google.maps.places.Autocomplete(input, {
+        types: ['geocode'],
+        componentRestrictions: { country: "uk" }
+      });
+    }
+  }
+
+  function initMap() {
+    const map = new google.maps.Map(document.getElementById("pets-map"), {
+      center: { lat: defaultCenter[0], lng: defaultCenter[1] },
+      zoom: zoomLevel
+    });
+
+    // Add pet markers
+    pets.forEach(function (pet) {
+      if (pet.lat && pet.lng) {
+        const position = { lat: pet.lat, lng: pet.lng };
+
+        const marker = new google.maps.Marker({
+          position,
+          map,
+          title: pet.name
+        });
+
+        const infoWindow = new google.maps.InfoWindow({
+          content: `
+            <div style="max-width: 150px">
+              <a href="/pets/${pet.id}">
+                <img src="${pet.image_url}" alt="${pet.name}" style="width: 100%; border-radius: 4px;" />
+                <p style="margin-top: 8px; font-weight: bold; color: #222;">${pet.name}</p>
+              </a>
+              <a href="/pets/${pet.id}" class="btn btn-sm btn-outline-primary mt-1" style="color: #222; border-color: #ccc;">View Profile</a>
+            </div>
+          `
+        });
+
+        marker.addListener("click", () => {
+          infoWindow.setOptions({
+            disableAutoPan: true,
+            shouldFocus: false
+        });
+
+        infoWindow.open(map);
+        infoWindow.setPosition(marker.getPosition());
+         
+        });
+      }
+    });
+
+    // Draw user radius
+    new google.maps.Circle({
+      center: { lat: defaultCenter[0], lng: defaultCenter[1] },
+      radius: searchRadius,
+      map,
+      fillColor: '#cce6ff',
+      strokeColor: '#0066cc',
+      fillOpacity: 0.3,
+      strokeWeight: 1
+    });
+
+    initAutocomplete();
+  }
+</script>
+
+<!-- ✅ Load Google Maps API -->
+<script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAPS_API_KEY'] %>&callback=initMap&libraries=places">
+</script>
+
+<script>
+  function setDateToday(fieldId) {
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById(fieldId).value = today;
+  }
+
+  function setDateTomorrow(fieldId) {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const iso = tomorrow.toISOString().split('T')[0];
+    document.getElementById(fieldId).value = iso;
+  }
+</script>

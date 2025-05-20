@@ -8,6 +8,12 @@
     <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
   </div>
 
+  <div class="form-group">
+    <%= f.label :location %>
+    <%= f.text_field :location, class: "form-control", id: "user-location-input", autocomplete: "on" %>
+    <button type="button" id="detect-location-btn" class="btn btn-secondary btn-sm mt-2">Use my current location</button>
+  </div>
+
   <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
     <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
   <% end %>
@@ -41,3 +47,65 @@
 <div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></div>
 
 <%= link_to "Back", :back %>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAPS_API_KEY'] %>&libraries=places"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const detectBtn = document.getElementById('detect-location-btn');
+  const locationInput = document.getElementById('user-location-input');
+  if (!detectBtn) return;
+
+  detectBtn.addEventListener('click', function() {
+    if ("geolocation" in navigator) {
+      detectBtn.disabled = true;
+      detectBtn.innerText = "Getting location...";
+
+      navigator.geolocation.getCurrentPosition(function(position) {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        // Use Google Maps Geocoding API or Nominatim for free to convert lat/lng to address
+
+        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
+          .then(response => response.json())
+          .then(data => {
+            if (data && data.display_name) {
+              locationInput.value = data.display_name;
+            } else {
+              alert("Could not determine address. Please enter manually.");
+            }
+            detectBtn.disabled = false;
+            detectBtn.innerText = "Use my current location";
+          })
+          .catch(() => {
+            alert("Address lookup failed. Please enter manually.");
+            detectBtn.disabled = false;
+            detectBtn.innerText = "Use my current location";
+          });
+      }, function(error) {
+        alert("Unable to get your location. Please check permissions.");
+        detectBtn.disabled = false;
+        detectBtn.innerText = "Use my current location";
+      });
+    } else {
+      alert("Geolocation is not supported by your browser.");
+    }
+  });
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  var locationInput = document.getElementById('user-location-input'); // or your chosen ID
+  if (locationInput && window.google && google.maps && google.maps.places) {
+    var autocomplete = new google.maps.places.Autocomplete(locationInput, {
+      types: ["geocode"],
+      componentRestrictions: { country: "gb" } // or "uk", or remove if not needed
+    });
+    autocomplete.addListener("place_changed", function() {
+      var place = autocomplete.getPlace();
+      // You can use additional place info if needed
+    });
+  }
+});
+</script>
